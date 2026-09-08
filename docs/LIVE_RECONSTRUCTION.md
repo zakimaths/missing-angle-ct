@@ -68,7 +68,7 @@ uv run --locked --no-editable pytest
 uv run --locked --no-editable python scripts/build_demo.py
 ```
 
-Checks cover exact square chord lengths, convergence against analytic disk projections, the adjoint identity, input validation, pause/one-view stepping, repeatability and isolation of unused measurements. Three 360-view reconstructions are compared with the authors' independent full-data FBP references (resized, with units converted). Those reference arrays live only in test fixtures. The initial local check gave correlation above 0.98 and RMSE below 0.004 /mm for all three objects; these are low-resolution implementation checks, not challenge submissions or clinical validation. The Mac workflow runs both Python and JavaScript tests on Apple Silicon and Intel; the Pages build runs them on Linux.
+Checks cover exact square chord lengths, convergence against analytic disk projections, the adjoint identity, input validation, pause/one-view stepping, repeatability and isolation of unused measurements. Three 360-view reconstructions are compared with the authors' independent full-data FBP references (resized, with units converted). Those reference arrays are independently checked against test fixtures and separately available to the comparison UI; they never enter the solver. The initial local check gave correlation above 0.98 and RMSE below 0.004 /mm for all three objects; these are low-resolution implementation checks, not challenge submissions or clinical validation. The Mac workflow runs both Python and JavaScript tests on Apple Silicon and Intel; the Pages build runs them on Linux.
 
 Headless calculation and replay (Node 20 or newer, for developers):
 
@@ -78,3 +78,25 @@ node scripts/replay_live.cjs runs/live.json --output runs/live-replay.json
 ```
 
 The same measured run is exchanged between Apple Silicon and Intel in CI and checked at 1e-9 absolute tolerance.
+
+## Reference comparisons, error statistics and labels
+
+The lab now defaults to three **real measured** Helsinki objects and also offers a deterministic synthetic test. The synthetic measurements are continuous analytic disk chord lengths, independent of the grid projector. The known shapes are sampled at 8 × 8 subpixels per displayed reference pixel; this introduces a documented raster approximation rather than claiming an exact pixel integral.
+
+The authors’ full-scan FBP images are available separately in `reference-data/`, converted to 1/mm and reduced from 512 to 96 pixels using anti-aliasing. They provide a reconstruction comparator, not exact knowledge of the physical attenuation field. The UI resamples that reference to the selected grid without fitting intensity, rotation, or translation. At 128 pixels the reference still contains only 96-pixel detail. Reference files and labels never enter the reconstruction worker.
+
+The error calculator reports image RMSE, MAE, mean bias and Pearson correlation for the first pass and current result. A signed difference map shows excess attenuation in orange and deficits in blue at ×10 contrast. Labelled rectangular regions provide local mean attenuation and reference RMSE; a large difference is evidence of disagreement, not automatic identification of missing anatomy.
+
+For each detector reading, the reconstructed image is projected through the acquisition geometry. Paired data use **x = measured** and **y = predicted**. Statistics include RMSE, MAE, bias, Pearson r, regression slope and intercept, and prediction R² = 1 − Σ(y−x)² / Σ(x−mean(x))². Prediction R² is distinct from squared correlation and may be negative. Constant or zero-energy data return unavailable values for undefined statistics. Statistics use every pair; the scatter plot shows at most 1,800 evenly sampled pairs. The angle plot scores all acquired views. Download the CSV to examine all readings yourself.
+
+Selected and unused rays are scored separately. Unused rays are not used in image updates, but repeated selection of settings using their errors makes them validation data rather than an untouched final test. Rays are spatially correlated; no independence-based confidence intervals or p-values are claimed. These conventions follow standard [NIST correlation definitions](https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/correlat.htm).
+
+Enhancement adds 1, 3 or 6 nonnegative SART passes, optionally followed by neighbour smoothing. The comparison states which errors fell or rose; it does not label every enhancement an improvement. The [reproducible benchmark](LIVE_BENCHMARK.md) compares three additional passes with no, light and stronger smoothing on all three measured objects and the analytic sample, using 360 spread views, 90 spread views and 90 consecutive views.
+
+### Import an aligned reference
+
+Use `ct-reference/1` JSON with `name`, integer `size` (16–512), a flat row-major `image` of `size²` finite attenuation values, `fov_mm` matching the projection input, `units: "1/mm"`, and `orientation: "row-major-top-left"`. Maximum file size: 8 MB. Coordinates must already be registered to the acquisition: matching dimensions alone does not prove alignment. Ordinary HU-valued CT images are not directly compatible with this attenuation reference format.
+
+### Save labels and reproduce comparisons
+
+Name the reconstruction and add up to 30 rectangular regions using percentages from the top-left corner. The image click sets the rectangle position; all coordinates also have keyboard-accessible numeric inputs. Labels are user observations, not AI classifications. The reconstruction export keeps the name, normalised region coordinates, reference, enhancement recipes and numerical results. Reopening it recalculates the image from the measurements and restores the labels. CSV and report JSON exports do not replace the replayable reconstruction file.

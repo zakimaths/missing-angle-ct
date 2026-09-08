@@ -62,7 +62,7 @@ uv run --locked --no-editable ruff check src tests scripts app
 uv run --locked --no-editable pytest
 ```
 
-The local installed package passed **70 Python tests and 9 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
+The local installed package passed **70 Python tests and 13 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
 
 The scientific GitHub workflow runs Apple Silicon and Intel Mac checks and replays a shared experiment on both architectures. The Pages workflow tests and builds the demo on Linux before deployment. Workflow badges/status on GitHub show the current remote result; [validation records](docs/VALIDATION.md) distinguish local observations from remote execution. Cross-platform comparisons use stated tolerances, not a promise of universal bitwise identity.
 
@@ -90,3 +90,5 @@ The source has no verified lesion labels, original scanner projections or docume
 | `.github/workflows/` | Mac reproducibility checks and Pages deployment |
 
 Original application code is MIT licensed. CT data is covered separately by the [3D Slicer terms and attribution](THIRD_PARTY_NOTICES.md), included in every CT export and the demo. Dependencies retain their own licences.
+
+The live lab also includes reference-image error maps, paired measurement statistics, before/after enhancement scores and saved region labels. Three real measured objects remain the default examples; an analytic disk test adds known ground truth. See the [live benchmark](docs/LIVE_BENCHMARK.md) and [comparison guide](docs/LIVE_RECONSTRUCTION.md#reference-comparisons-error-statistics-and-labels).

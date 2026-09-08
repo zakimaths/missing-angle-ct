@@ -96,6 +96,23 @@
     }
     return image;
   }
-  const api={VERSION,validate,settings,selectViews,viewOrder,rayEndpoints,traceRay,matrixForView,forward,update,smooth};
+  // Descriptive paired statistics: x is reference/measured, y is reconstructed/predicted.
+  // Pearson correlation alone cannot detect scale or offset errors.
+  function paired(x,y) {
+    if(!x.length||x.length!==y.length)throw Error('Paired arrays must have the same nonzero length.');
+    let mx=0,my=0,xx=0,yy=0,xy=0,se=0,ae=0,energy=0;
+    for(let i=0;i<x.length;i++){
+      if(!finite(x[i])||!finite(y[i]))throw Error('Statistics require finite values.');
+      const dx=x[i]-mx,dy=y[i]-my;mx+=dx/(i+1);my+=dy/(i+1);
+      xx+=dx*(x[i]-mx);yy+=dy*(y[i]-my);xy+=dx*(y[i]-my);
+      const e=y[i]-x[i];se+=e*e;ae+=Math.abs(e);energy+=x[i]*x[i];
+    }
+    return {n:x.length,rmse:Math.sqrt(se/x.length),mae:ae/x.length,bias:my-mx,
+      relative:energy>0?Math.sqrt(se/energy):null,
+      correlation:xx>0&&yy>0?Math.max(-1,Math.min(1,xy/Math.sqrt(xx*yy))):null,
+      slope:xx>0?xy/xx:null,intercept:xx>0?my-xy/xx*mx:null,
+      r2:xx>0?1-se/xx:null};
+  }
+  const api={VERSION,validate,settings,selectViews,viewOrder,rayEndpoints,traceRay,matrixForView,forward,update,smooth,paired};
   root.CT=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

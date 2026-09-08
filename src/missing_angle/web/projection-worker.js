@@ -1,10 +1,19 @@
 'use strict';
-if (typeof CT === 'undefined') importScripts('projection-core.js');
-let input,options,image,baseline,selected,order,cache,paused=false,resumeWait=null,delay=12,running=false;
+if (typeof CT === 'undefined') importScripts('projection-core.js?v=6');
+let input,options,image,baseline,baselineEvaluation,selected,order,cache,paused=false,resumeWait=null,delay=12,running=false;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function gate(early=false){if(paused)await new Promise(resolve=>resumeWait=resolve);await sleep(delay && early ? 140 : delay);}
 function snapshot(stage,done,total,view,pass){const copy=Float32Array.from(image);postMessage({type:'frame',stage,done,total,view,pass,image:copy},[copy.buffer]);}
-async function residual(indices){let num=0,den=0;for(let k=0;k<indices.length;k++){const i=indices[k],m=cache.get(i)||CT.matrixForView(input,options.size,i),prediction=CT.forward(m,image);for(let d=0;d<prediction.length;d++){num+=(prediction[d]-input.sinogram[i][d])**2;den+=input.sinogram[i][d]**2;}if(k%24===0)await sleep(0);}return den?Math.sqrt(num/den):null;}
+async function evaluateImage(){
+ const used=new Set(selected),x=[[],[]],y=[[],[]],angles=[],predictions=[];
+ for(let i=0;i<input.angles_deg.length;i++){
+  const matrix=cache.get(i)||CT.matrixForView(input,options.size,i),prediction=CT.forward(matrix,image),group=used.has(i)?0:1;
+  predictions.push(prediction);for(let d=0;d<prediction.length;d++){x[group].push(input.sinogram[i][d]);y[group].push(prediction[d]);}
+  angles.push({view:i,angle:input.angles_deg[i],selected:!group,...CT.paired(input.sinogram[i],prediction)});
+  if(i%24===0)await sleep(0);
+ }
+ return {selected:CT.paired(x[0],y[0]),unused:x[1].length?CT.paired(x[1],y[1]):null,angles,predictions};
+}
 async function run(stage) {
   running=true;
   const passes=stage==='build'?1:options.passes,total=passes*order.length;
@@ -18,12 +27,11 @@ async function run(stage) {
   }
   if(stage==='build')baseline=image.slice();
   postMessage({type:'scoring'});
-  const observed=await residual(selected);
-  // Score all unused acquired views; do not use them to update the image.
-  const used=new Set(selected),hidden=input.angles_deg.map((_,i)=>i).filter(i=>!used.has(i));
-  const withheld=hidden.length?await residual(hidden):null;
+  const evaluation=await evaluateImage();
+  if(stage==='build')baselineEvaluation={selected:evaluation.selected,unused:evaluation.unused};
+  const observed=evaluation.selected.relative,withheld=evaluation.unused?.relative??null;
   const result=Float64Array.from(image);
-  postMessage({type:'complete',stage,observed,withheld,image:result,baseline:Float64Array.from(baseline),selected,order,options,algorithm:CT.VERSION});running=false;
+  postMessage({type:'complete',stage,observed,withheld,evaluation,baselineEvaluation,image:result,baseline:Float64Array.from(baseline),selected,order,options,algorithm:CT.VERSION});running=false;
 }
 onmessage=async event=>{
   const m=event.data;

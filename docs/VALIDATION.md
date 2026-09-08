@@ -80,3 +80,13 @@ Locally passed 70 Python tests and 9 JavaScript tests. The new kernel was checke
 Visual checks covered the view gallery, selected-angle profile, mobile layout, 200% CSS layout zoom and keyboard view navigation. Non-animated calculation displays the final image and keeps all numerical snapshots for manual inspection; reduced-motion preferences select this mode initially.
 
 CI now runs the JavaScript kernel tests on Linux, Apple Silicon and Intel and exchanges a measured-data JSON run between the two Mac architectures. Check the workflow result for the current commit; these additions do not turn the specimen tests into clinical validation.
+
+
+### Reference comparison and annotation update (2026-09-08)
+
+- 13 JavaScript checks pass, including all three measured objects against author FBP references, independent analytic reconstruction, paired-statistic edge cases and reference/label validation.
+- A 48-result benchmark covers three real objects plus analytic disks, three acquisition budgets and four reconstruction recipes. See `LIVE_BENCHMARK.json` and its readable table.
+- Browser: real TA with 90 views produced image RMSE 0.003163 on the first pass and 0.002005 after three light-smoothed correction passes; unused-ray RMSE fell 60.1%.
+- A named rectangular region exported and restored. Reopening the downloaded run reproduced the browser image exactly; the Node replay maximum difference was 3.19e-16, within 1e-9.
+- CSV export contained all 100,940 reading pairs, including 88,340 unused readings; every exported error equalled predicted minus measured.
+- Synthetic 360-view reconstruction also completed in the browser. The diagram counter uses an opaque DOM overlay over a high-density square canvas.

@@ -23,3 +23,6 @@ demo/live.js
 demo/projection-core.js
 demo/projection-worker.js
 demo/projection-data/
+
+demo/study.js
+demo/reference-data/

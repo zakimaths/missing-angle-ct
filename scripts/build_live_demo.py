@@ -5,9 +5,10 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / 'src/missing_angle/web'
 DEMO = Path(globals().get('LIVE_DESTINATION', ROOT / 'demo'))
-for name in ('live.css', 'live.js', 'projection-core.js', 'projection-worker.js'):
+for name in ('live.css', 'live.js', 'study.js', 'projection-core.js', 'projection-worker.js'):
     shutil.copy2(WEB / name, DEMO / name)
 shutil.copytree(WEB / 'projection-data', DEMO / 'projection-data', dirs_exist_ok=True)
+shutil.copytree(WEB / 'reference-data', DEMO / 'reference-data', dirs_exist_ok=True)
 index = (DEMO / 'index.html' if (DEMO / 'index.html').exists() else ROOT / 'demo/index.html').read_text()
 a, b = '<!-- LIVE-LAB-START -->', '<!-- LIVE-LAB-END -->'
 if a not in index:

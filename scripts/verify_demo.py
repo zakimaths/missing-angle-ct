@@ -34,7 +34,10 @@ for key in ('ta', 'tb', 'tc'):
     data = json.loads((root / 'projection-data' / f'{key}.json').read_text())
     assert np.asarray(data['sinogram']).shape == (721, 140)
     assert 'image' not in data and 'reference' not in data
-for filename in ('live.js', 'live.css', 'projection-core.js', 'projection-worker.js'):
+for filename in ('live.js', 'live.css', 'study.js', 'projection-core.js', 'projection-worker.js'):
     assert (root / filename).read_bytes() == (Path('src/missing_angle/web') / filename).read_bytes()
 assert (Path('src/missing_angle/web/live-panel.html').read_text()) in (root / 'index.html').read_text()
 print('Live calculator code matches packaged source; three acquired 721-view inputs contain no reconstruction image.')
+
+for key in ("ta", "tb", "tc"):
+    assert (root / "reference-data" / f"{key}.json").read_bytes() == (Path("src/missing_angle/web/reference-data") / f"{key}.json").read_bytes()

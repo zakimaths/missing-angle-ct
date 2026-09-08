@@ -43,10 +43,12 @@ def import_htc_mat(raw):
 def live_html(custom=None):
     inputs = {key: json.loads((WEB / 'projection-data' / f'{key}.json').read_text())
               for key in ('ta', 'tb', 'tc')}
+    references = {key: json.loads((WEB / 'reference-data' / f'{key}.json').read_text())
+                  for key in ('ta', 'tb', 'tc')}
     panel = (WEB / 'live-panel.html').read_text()
     if custom is not None:
-        inputs['ta'] = custom
-        panel = panel.replace('Helsinki object A · 721 measured views', 'Imported HTC measurements')
+        inputs['custom'] = custom
+        panel = panel.replace('<option value="ta">', '<option value="custom">Imported HTC measurements</option><option value="ta">', 1)
     worker = (WEB / 'projection-core.js').read_text() + '\n' + (WEB / 'projection-worker.js').read_text()
     # Escape HTML-significant characters in data and code embedded in script strings.
     def script_json(value):
@@ -55,5 +57,6 @@ def live_html(custom=None):
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
             '<style>body{margin:0;background:white}'+(WEB/'live.css').read_text()+'</style></head><body>'
             + panel + '<script>window.CT_EMBEDDED_DATA='+script_json(inputs)+';window.CT_WORKER_CODE='
-            + script_json(worker) + ';</script><script>'+(WEB/'projection-core.js').read_text()
-            + '</script><script>'+(WEB/'live.js').read_text()+'</script></body></html>')
+            + script_json(worker) + ';window.CT_EMBEDDED_REFERENCES=' + script_json(references) + ';</script><script>'+(WEB/'projection-core.js').read_text()
+            + '</script><script>'+(WEB/'study.js').read_text()
+            + '</script><script>'+(WEB/'live.js').read_text().replace("load('ta');", "load('custom');" if custom is not None else "load('ta');")+'</script></body></html>')

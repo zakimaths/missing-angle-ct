@@ -1,0 +1,2 @@
+HTC2022 v1.4.0, Meaney, Silva de Moura, Juvonen and Siltanen (2023). CC BY 4.0. https://zenodo.org/records/8041800
+Authors full-data FBP references converted to 1/mm and downsampled from 512 to 96 with anti-aliasing. For evaluation only.
