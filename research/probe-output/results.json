@@ -1,0 +1,87 @@
+{
+  "scope": "Local CPU smoke check only; no feature, user, Intel Mac, or CI evaluation",
+  "python": "3.12.14",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "scikit-image": "0.26.0"
+  },
+  "timing_protocol": "one warm-up, median of 3 serial calls; imports excluded; no thread overrides",
+  "official_gallery": {
+    "size": [
+      160,
+      160
+    ],
+    "views": 160,
+    "fbp_rmse": 0.028274118607151944,
+    "sart1_rmse": 0.0329224247130659,
+    "sart2_rmse": 0.021377848955348094
+  },
+  "cpu_128": {
+    "views": 180,
+    "forward_median_s": 0.01900004199706018,
+    "fbp_median_s": 0.016988291987217963,
+    "sart1_median_s": 0.05144999996991828,
+    "fbp_rmse": 0.03179242528052232,
+    "sart1_rmse": 0.02963279357531367
+  },
+  "restricted_fbp": {
+    "observed_angles": "0..89 degrees",
+    "full_grid": "0..179 degrees in 1-degree steps",
+    "max_abs_direct_minus_2x_restricted": 0.0,
+    "note": "Both use zero angular completion; the direct subset call has twice the angular weight per retained view. This is a convention difference, not proof of a better reconstruction."
+  },
+  "analytic_disk": {
+    "radius": 0.43,
+    "attenuation": 1,
+    "subsamples_per_axis": 8,
+    "angle_step_degrees": 5,
+    "results": [
+      {
+        "n": 64,
+        "pixel_pitch": 0.03125,
+        "relative_l2_projection_error": 0.022010215934629564
+      },
+      {
+        "n": 128,
+        "pixel_pitch": 0.015625,
+        "relative_l2_projection_error": 0.006966638823600042
+      },
+      {
+        "n": 256,
+        "pixel_pitch": 0.0078125,
+        "relative_l2_projection_error": 0.004056168613434009
+      }
+    ],
+    "limitation": "Centered disk alone does not validate angle signs, translations, off-axis geometry or independent ellipse inversion."
+  },
+  "same_process_fbp_bitwise_repeat": true,
+  "raw_array_sha256": {
+    "official_phantom": "b3d38ef41565648b3f9dcd8d1100fa3b1ffff589261fec1f35a281775a22651a",
+    "official_sinogram": "7d4d8670bb75c30fde87d23504837b25ff6dfd76e2aa7dfbe3c195e58889fbdf",
+    "official_fbp": "c51c62a32eb5c9af62b247263da039390f5ed48c4bb78d9909228cb7e2b92afb",
+    "official_sart1": "02b3560e51d262e3de2b52deb522de43f5bac65771a1fe57244de9085d560bc6",
+    "official_sart2": "6b16bc863b02c0cf4fa32bc96c038ded5dec6d8806902b01ab72936264e9d804",
+    "disk_raster_64": "b58e64c095ed2d71a7f2faff5dd301e7040aae4612b75802007e3a67b970af58",
+    "disk_sinogram_64": "3dfffd8fef415eda5b2d7dc22ee64b6dc1ea129846d0055dba9403a130319768",
+    "disk_analytic_64": "d079466d0faaaf6f2ac0d4ee3beafc93aca2fd5f2f330af03eca44e604b2b6c7",
+    "disk_raster_128": "d29f08e57594cb2fe6bc363a06eb16292b947393f851c2d1b771d59db0522b9e",
+    "disk_sinogram_128": "ab7d31f1ad1ff3b1f196722f9ab4b01baef54d652a456469e48f6365e5f49786",
+    "disk_analytic_128": "1070724f591be9844b4fd923ca709a0869951424a42bb0b901bbe5d2575467b1",
+    "disk_raster_256": "356c695c734c45a9a6224b7d41de5e6cc0c6eebd590d5345768d7a7cf0e06190",
+    "disk_sinogram_256": "f5afe0630f1c77bebdaa446463c11f71b3bc947dd2289610199deae332210529",
+    "disk_analytic_256": "197e958c79fa91436f077504e6f09d7181bcd37c1a6759bcf0376d2bbe6fe5f2",
+    "phantom_128": "6c0be931c6bb13db1a7dad4c45ba9697eddfc2c4769c296174ff3232b52a5769",
+    "theta_128": "4d7d36f21ff4acc76f27b76b7fde5b43e2568283dad765d6ba7df6a719db96b7",
+    "sinogram_128": "380573eff631ceea7c679cbffdc8e8a2f7cb0580e4309267c9cc01d9e7763455",
+    "fbp_128": "c6de8e0ad3a5513a766e2f874f1a6dfe84381b11060aee681eba595af13e1dae",
+    "sart1_128": "6d94afd2d5fc2a543e9fdc41eba0c261ac2043884fe79b95824be1a5392425f4",
+    "acquired_mask": "83ed905151bd113aa09c8dbee1ffba8f032371487621b435e04856e1e4ce9187",
+    "direct_subset_fbp": "41f1ed0d907639a8bae690e5c306ac002341048541202fc7de85872b3ec3eafe",
+    "restricted_fbp": "62a86efee2bb5ae34aecb36aa21cb767baeb5573037d63ccde24d6514b4e49fb"
+  },
+  "iradon_source_sha256": "2a379d4bbd99db0c5c145baec5df5ea2fc199423b33e4727a8d6d89c235883e1",
+  "probe_sha256": "b57d7f494220f5c8332192963bacc1857d19ad8870337a8b102ad9d873bd5073"
+}

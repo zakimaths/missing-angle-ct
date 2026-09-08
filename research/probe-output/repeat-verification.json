@@ -1,0 +1,12 @@
+{
+  "date": "2026-09-07",
+  "separate_process_arrays_match": true,
+  "array_count": 22,
+  "actual_arrays_verified_by": "verify_repeat.py: shape, dtype, values and SHA-256 checked; successful execution recorded",
+  "hardware": {
+    "model": "MacBook Air",
+    "chip": "Apple M3",
+    "memory": "8 GB"
+  },
+  "scope": "Same Mac, same environment; not cross-platform reproducibility."
+}

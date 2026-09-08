@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling==1.32.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "missing-angle-ct"
+version = "0.3.0"
+description = "Student CT reconstruction lab with real images, iteration playback and reproducible experiments"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = [
+  "numpy==2.5.3",
+  "scipy==1.18.1",
+  "scikit-image==0.26.0",
+  "matplotlib>=3.10,<4",
+  "streamlit==1.63.0",
+]
+
+[project.scripts]
+angle = "missing_angle.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.12,<1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/missing_angle"]
+
+[tool.uv]
+cache-keys = [{ file = "pyproject.toml" }, { file = "README.md" }, { file = "src/**/*.py" }, { file = "src/missing_angle/data/*.npy" }, { file = "src/missing_angle/data/*.json" }, { file = "src/missing_angle/data/*.txt" }]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

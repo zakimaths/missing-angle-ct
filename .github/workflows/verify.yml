@@ -1,0 +1,51 @@
+name: Scientific checks and Mac replay
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reference:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+      - run: python -m pip install uv==0.9.17
+      - run: uv sync --locked --no-editable
+      - run: uv run --locked --no-editable ruff check src tests app
+      - run: uv run --locked --no-editable pytest
+      - run: uv run --locked --no-editable angle run --config experiments/baseline.json --output runs/reference.zip
+      - run: uv run --locked --no-editable angle public-ct --slice 80 --config experiments/baseline.json --refine --output runs/public-ct.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reference-measurements
+          path: runs/*.zip
+  replay:
+    needs: reference
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+      - run: python -m pip install uv==0.9.17
+      - run: uv sync --locked --no-editable
+      - run: uv run --locked --no-editable pytest
+      - uses: actions/download-artifact@v4
+        with:
+          name: reference-measurements
+          path: runs
+      - run: uv run --locked --no-editable angle replay runs/reference.zip --output runs/replay.json
+      - run: uv run --locked --no-editable angle replay runs/public-ct.zip --output runs/public-ct-replay.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: replay-${{ matrix.os }}
+          path: runs/*replay.json

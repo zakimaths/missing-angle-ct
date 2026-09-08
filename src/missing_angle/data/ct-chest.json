@@ -1,0 +1,88 @@
+{
+  "id": "slicer-ct-chest-v1",
+  "licence": "3D Slicer licence, Part B; see SLICER-LICENSE.txt",
+  "modification": "Subset of eight axial slices; lossless int32-to-int16 conversion. Other volume metadata omitted. Reconstructions and normalised working images are derived products.",
+  "orientation": "Columns increase toward patient left; rows toward posterior; source array orientation retained.",
+  "origin_note": "Public anonymised legacy sample. Acquiring hospital, patient demographics and diagnosis are not documented; no hospital affiliation or endorsement is asserted.",
+  "original_shape_zyx": [
+    139,
+    512,
+    512
+  ],
+  "pixel_spacing_yx_mm": [
+    0.7617189884185793,
+    0.7617189884185793
+  ],
+  "slice_spacing_mm": 2.5,
+  "slices": [
+    {
+      "file": "ct-chest-016.npy",
+      "index": 16,
+      "max_hu": 1381,
+      "min_hu": -3024,
+      "pixel_sha256": "dcadee458f996c68bd8d014c25f1892b85a32c16b755b7df7cb86b6c96b4b6cd",
+      "sha256": "ae28fd9ab5122579fccd2d08fca118f1ea657c0eccf42c46a9891695470ea9fd"
+    },
+    {
+      "file": "ct-chest-032.npy",
+      "index": 32,
+      "max_hu": 1068,
+      "min_hu": -3024,
+      "pixel_sha256": "e4d776674b272128c42977c5f55c70373a021f97b2ed323f9dc8165f53532271",
+      "sha256": "f210de6bebbfee2556e9dddc897a406808963f07b15e1d65e1f968c453c0a127"
+    },
+    {
+      "file": "ct-chest-048.npy",
+      "index": 48,
+      "max_hu": 1044,
+      "min_hu": -3024,
+      "pixel_sha256": "9033d72660fb0ae7008d931b70be49c569e5729285e3aa9bef75955c3ae90290",
+      "sha256": "4129162d163aee4190a3d5d6c5a82ff40bb11b072b922c0a890931a3edd0c3e8"
+    },
+    {
+      "file": "ct-chest-064.npy",
+      "index": 64,
+      "max_hu": 1128,
+      "min_hu": -3024,
+      "pixel_sha256": "225069e3081972a705c0964b686f7aa73e6d7a331fb3ae8e9cdf118b75241a61",
+      "sha256": "18e8970e5998565a3215b73f384c0dd9d8413f84678076230d69ea3472773d0b"
+    },
+    {
+      "file": "ct-chest-080.npy",
+      "index": 80,
+      "max_hu": 1012,
+      "min_hu": -3024,
+      "pixel_sha256": "55cd7c6cda871c15b6a20ea7f7b9453c112c45c3945d6b9668494375d2cf13fe",
+      "sha256": "6b6735053a8fc834992e72c83ec12f63c8812d6838f0723102d2282842064708"
+    },
+    {
+      "file": "ct-chest-096.npy",
+      "index": 96,
+      "max_hu": 926,
+      "min_hu": -3024,
+      "pixel_sha256": "1480bd69bbc8f46a5aad967ffb06c998abc1a2ed9afe1ca9ab0a3e82a8137c28",
+      "sha256": "c057557577c03f1cbe26594b53948e7c0f0d1d9a0718fdae7402b6e2a34ce613"
+    },
+    {
+      "file": "ct-chest-112.npy",
+      "index": 112,
+      "max_hu": 3071,
+      "min_hu": -3024,
+      "pixel_sha256": "ed18ddb41dafab1e26afbdde28080e61eb9b83741c597e32d15044ee219f065f",
+      "sha256": "6e957a37cb4a1d4e43b03fb637b4769ce14d1b324123031897a76e95074b4406"
+    },
+    {
+      "file": "ct-chest-128.npy",
+      "index": 128,
+      "max_hu": 1545,
+      "min_hu": -3024,
+      "pixel_sha256": "ce2cfe047fbff276b5797c70de72447ae536db865c1d1515ae9837ebf2f28ac3",
+      "sha256": "8ab27fdb7a9928cecd0c9c0c2dfa05342e4437745d9fd7c778bec6f13dba253c"
+    }
+  ],
+  "source_sha256": "4507b664690840abb6cb9af2d919377ffc4ef75b167cb6fd0f747befdb12e38e",
+  "source_url": "https://github.com/Slicer/SlicerTestingData/releases/download/SHA256/4507b664690840abb6cb9af2d919377ffc4ef75b167cb6fd0f747befdb12e38e",
+  "space": "left-posterior-superior",
+  "title": "3D Slicer \u00b7 CT Chest",
+  "units": "HU"
+}

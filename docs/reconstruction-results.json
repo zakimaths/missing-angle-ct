@@ -1,0 +1,351 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "system": "Darwin",
+    "system_version": "25.6.0",
+    "machine": "arm64",
+    "packages": {
+      "missing-angle-ct": "0.3.0",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-image": "0.26.0",
+      "streamlit": "1.63.0",
+      "matplotlib": "3.11.1"
+    },
+    "source_sha256": "69575aa4252b715c500bcd154ee79f701d0ab92ecb35fa5a9e746bba8505ee8c",
+    "lock_sha256": "790ccf6a337c48b261af9ebb8f2dbd905d2b27af2d6bd0a1668e8f301dc41e86"
+  },
+  "development_slice": 80,
+  "evaluation_slices": [
+    16,
+    32,
+    48,
+    64,
+    96,
+    112,
+    128
+  ],
+  "scope": "One public acquired CT volume; simulated projections. Within-volume evaluation, not clinical validation.",
+  "rows": [
+    {
+      "slice": 16,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.004122794968494481,
+        "sart": 0.002301775460484953,
+        "regularized": 0.001819879339318375
+      },
+      "sart_10_no_tv_rmse": 0.0014609243609341278
+    },
+    {
+      "slice": 16,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.006506771271324084,
+        "sart": 0.00554951751471315,
+        "regularized": 0.0038712322699446244
+      },
+      "sart_10_no_tv_rmse": 0.003125532234139799
+    },
+    {
+      "slice": 16,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.045924991240305045,
+        "sart": 0.014589104691988423,
+        "regularized": 0.011487339787278653
+      },
+      "sart_10_no_tv_rmse": 0.011555776428555067
+    },
+    {
+      "slice": 16,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.050405215389331015,
+        "sart": 0.01769093188825107,
+        "regularized": 0.01627262365079922
+      },
+      "sart_10_no_tv_rmse": 0.021513969655298715
+    },
+    {
+      "slice": 32,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.0041155447018181674,
+        "sart": 0.002226060192842731,
+        "regularized": 0.0017928825416310165
+      },
+      "sart_10_no_tv_rmse": 0.0014314564044184879
+    },
+    {
+      "slice": 32,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.0062878591344036235,
+        "sart": 0.005435676273954871,
+        "regularized": 0.0037442399772286243
+      },
+      "sart_10_no_tv_rmse": 0.0029266852961366357
+    },
+    {
+      "slice": 32,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.044867629740806284,
+        "sart": 0.013619268799772639,
+        "regularized": 0.010955067831301101
+      },
+      "sart_10_no_tv_rmse": 0.010931532622686169
+    },
+    {
+      "slice": 32,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.04945462248225414,
+        "sart": 0.01674187978474659,
+        "regularized": 0.015591037128205466
+      },
+      "sart_10_no_tv_rmse": 0.020874847923406055
+    },
+    {
+      "slice": 48,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.0048340394559080084,
+        "sart": 0.0025948588613015815,
+        "regularized": 0.00211471262754427
+      },
+      "sart_10_no_tv_rmse": 0.001709165965891301
+    },
+    {
+      "slice": 48,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.007481882689564825,
+        "sart": 0.006459157561281872,
+        "regularized": 0.004240976350452615
+      },
+      "sart_10_no_tv_rmse": 0.003409975886043954
+    },
+    {
+      "slice": 48,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.03416111929664496,
+        "sart": 0.01960005324487897,
+        "regularized": 0.017861390455016665
+      },
+      "sart_10_no_tv_rmse": 0.017950247827192154
+    },
+    {
+      "slice": 48,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.04002080041328665,
+        "sart": 0.021730427418948404,
+        "regularized": 0.020691761588918136
+      },
+      "sart_10_no_tv_rmse": 0.024215722256145756
+    },
+    {
+      "slice": 64,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.004995777083114794,
+        "sart": 0.0028028562171498544,
+        "regularized": 0.002240574415401438
+      },
+      "sart_10_no_tv_rmse": 0.0018504015143571348
+    },
+    {
+      "slice": 64,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.00794022315713394,
+        "sart": 0.006574087414164916,
+        "regularized": 0.004490712537700309
+      },
+      "sart_10_no_tv_rmse": 0.0036270764877693366
+    },
+    {
+      "slice": 64,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.03363937191128661,
+        "sart": 0.020497859399488342,
+        "regularized": 0.01849042345840278
+      },
+      "sart_10_no_tv_rmse": 0.01847502275556591
+    },
+    {
+      "slice": 64,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.039588076247919705,
+        "sart": 0.02251362823440288,
+        "regularized": 0.02092259448263299
+      },
+      "sart_10_no_tv_rmse": 0.024213964193494635
+    },
+    {
+      "slice": 80,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.005093692405265543,
+        "sart": 0.0029687326875611738,
+        "regularized": 0.0023243953979883696
+      },
+      "sart_10_no_tv_rmse": 0.0020167447132261487
+    },
+    {
+      "slice": 80,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.008083194008117451,
+        "sart": 0.006710895254937386,
+        "regularized": 0.004459548964731679
+      },
+      "sart_10_no_tv_rmse": 0.0037985018975392813
+    },
+    {
+      "slice": 80,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.03232967991730115,
+        "sart": 0.0210309499913315,
+        "regularized": 0.019013224391653857
+      },
+      "sart_10_no_tv_rmse": 0.018971402240110114
+    },
+    {
+      "slice": 80,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.03841112169685746,
+        "sart": 0.022819906264943172,
+        "regularized": 0.021325533923160184
+      },
+      "sart_10_no_tv_rmse": 0.024450523928830487
+    },
+    {
+      "slice": 96,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.005007279219158682,
+        "sart": 0.0028612834865164413,
+        "regularized": 0.0022760168638707333
+      },
+      "sart_10_no_tv_rmse": 0.00189468467619686
+    },
+    {
+      "slice": 96,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.008175396107407572,
+        "sart": 0.006708065483608089,
+        "regularized": 0.0045354620441875665
+      },
+      "sart_10_no_tv_rmse": 0.0036610547251620966
+    },
+    {
+      "slice": 96,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.030577475648499275,
+        "sart": 0.02017776313547667,
+        "regularized": 0.018125912514796255
+      },
+      "sart_10_no_tv_rmse": 0.018061055990343074
+    },
+    {
+      "slice": 96,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.036968602638309804,
+        "sart": 0.022128590424941637,
+        "regularized": 0.020684236920679454
+      },
+      "sart_10_no_tv_rmse": 0.023751746975225127
+    },
+    {
+      "slice": 112,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.00498318774110527,
+        "sart": 0.002874239974535649,
+        "regularized": 0.0022290081326534726
+      },
+      "sart_10_no_tv_rmse": 0.0018655724673902838
+    },
+    {
+      "slice": 112,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.00813531181458884,
+        "sart": 0.006911227158620055,
+        "regularized": 0.004430832725551326
+      },
+      "sart_10_no_tv_rmse": 0.0037922727572482326
+    },
+    {
+      "slice": 112,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.030604908749726302,
+        "sart": 0.018174021608320066,
+        "regularized": 0.01546350893028126
+      },
+      "sart_10_no_tv_rmse": 0.015528953646861274
+    },
+    {
+      "slice": 112,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.03704458596252469,
+        "sart": 0.020270530338620345,
+        "regularized": 0.018428990398864396
+      },
+      "sart_10_no_tv_rmse": 0.02183147642333718
+    },
+    {
+      "slice": 128,
+      "protocol": "full",
+      "rmse": {
+        "fbp": 0.004483772923111979,
+        "sart": 0.002649927167759279,
+        "regularized": 0.0021768405964004978
+      },
+      "sart_10_no_tv_rmse": 0.0016853239908504584
+    },
+    {
+      "slice": 128,
+      "protocol": "sparse",
+      "rmse": {
+        "fbp": 0.007285131541751475,
+        "sart": 0.006327083466078913,
+        "regularized": 0.004293931619125398
+      },
+      "sart_10_no_tv_rmse": 0.0036201678159490554
+    },
+    {
+      "slice": 128,
+      "protocol": "missing",
+      "rmse": {
+        "fbp": 0.032343309245990576,
+        "sart": 0.01492684896003727,
+        "regularized": 0.012304158451769276
+      },
+      "sart_10_no_tv_rmse": 0.012522089503110142
+    },
+    {
+      "slice": 128,
+      "protocol": "noisy",
+      "rmse": {
+        "fbp": 0.038473557797644595,
+        "sart": 0.01729926520573555,
+        "regularized": 0.016244910674930398
+      },
+      "sart_10_no_tv_rmse": 0.020335191009900392
+    }
+  ]
+}

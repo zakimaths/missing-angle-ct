@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-07T19:18:46.442202+00:00",
+  "title": "Design System: Missing-Angle CT Detective",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Instrument Teal",
+        "tonalRamp": [
+          "oklch(15.00% 0.09247 202.56)",
+          "oklch(26.43% 0.09247 202.56)",
+          "oklch(37.86% 0.09247 202.56)",
+          "oklch(49.29% 0.09247 202.56)",
+          "oklch(60.71% 0.09247 202.56)",
+          "oklch(72.14% 0.09247 202.56)",
+          "oklch(83.57% 0.09247 202.56)",
+          "oklch(95.00% 0.09247 202.56)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "White Canvas",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 89.88)",
+          "oklch(26.43% 0.00000 89.88)",
+          "oklch(37.86% 0.00000 89.88)",
+          "oklch(49.29% 0.00000 89.88)",
+          "oklch(60.71% 0.00000 89.88)",
+          "oklch(72.14% 0.00000 89.88)",
+          "oklch(83.57% 0.00000 89.88)",
+          "oklch(95.00% 0.00000 89.88)"
+        ]
+      },
+      "secondary-surface": {
+        "role": "neutral",
+        "displayName": "Cool Supporting Surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.00532 197.07)",
+          "oklch(26.43% 0.00532 197.07)",
+          "oklch(37.86% 0.00532 197.07)",
+          "oklch(49.29% 0.00532 197.07)",
+          "oklch(60.71% 0.00532 197.07)",
+          "oklch(72.14% 0.00532 197.07)",
+          "oklch(83.57% 0.00532 197.07)",
+          "oklch(95.00% 0.00532 197.07)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.03609 229.42)",
+          "oklch(26.43% 0.03609 229.42)",
+          "oklch(37.86% 0.03609 229.42)",
+          "oklch(49.29% 0.03609 229.42)",
+          "oklch(60.71% 0.03609 229.42)",
+          "oklch(72.14% 0.03609 229.42)",
+          "oklch(83.57% 0.03609 229.42)",
+          "oklch(95.00% 0.03609 229.42)"
+        ]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Quiet Divider",
+        "tonalRamp": [
+          "oklch(15.00% 0.00966 196.99)",
+          "oklch(26.43% 0.00966 196.99)",
+          "oklch(37.86% 0.00966 196.99)",
+          "oklch(49.29% 0.00966 196.99)",
+          "oklch(60.71% 0.00966 196.99)",
+          "oklch(72.14% 0.00966 196.99)",
+          "oklch(83.57% 0.00966 196.99)",
+          "oklch(95.00% 0.00966 196.99)"
+        ]
+      },
+      "target-outline": {
+        "role": "annotation",
+        "displayName": "Gold Target Outline",
+        "tonalRamp": [
+          "oklch(15.00% 0.12702 78.50)",
+          "oklch(26.43% 0.12702 78.50)",
+          "oklch(37.86% 0.12702 78.50)",
+          "oklch(49.29% 0.12702 78.50)",
+          "oklch(60.71% 0.12702 78.50)",
+          "oklch(72.14% 0.12702 78.50)",
+          "oklch(83.57% 0.12702 78.50)",
+          "oklch(95.00% 0.12702 78.50)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "body": {
+        "displayName": "Native Sans",
+        "purpose": "Streamlit sans serif theme; concrete family, size and metrics remain framework defaults."
+      },
+      "headline": {
+        "displayName": "Application Headline",
+        "purpose": "App name; 1.6rem at the narrow breakpoint."
+      },
+      "section": {
+        "displayName": "Workspace Heading",
+        "purpose": "The active comparison task."
+      },
+      "title": {
+        "displayName": "Subsection Title",
+        "purpose": "Sidebar, save and replay headings."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "reduced-motion",
+        "value": "@media(prefers-reduced-motion: reduce) {* {scroll-behavior: auto !important; transition: none !important;}}",
+        "purpose": "Project override removes transitions and smooth scrolling for reduced-motion preference; no custom motion duration or easing is defined."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "700px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Run, reveal or open a preset. Preview records project colours and focus only; padding, radius and full interaction styling remain native Streamlit defaults in the app.",
+      "html": "<button class=\"ds-primary\">Run experiment</button>",
+      "css": ".ds-primary{font-family:sans-serif;background:#007F87;color:#FFFFFF;border-color:#007F87}.ds-primary:hover{cursor:pointer}.ds-primary:focus-visible{outline:3px solid #007F87;outline-offset:2px;}.ds-primary:active{background:#007F87}.ds-primary:disabled{cursor:not-allowed}"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "description": "Reset, save or replay. Native control geometry is intentionally not reproduced as a project token.",
+      "html": "<button class=\"ds-secondary\">Reset to baseline</button>",
+      "css": ".ds-secondary{font-family:sans-serif;color:#172F3A;}.ds-secondary:hover{cursor:pointer}.ds-secondary:focus-visible{outline:3px solid #007F87;outline-offset:2px;}.ds-secondary:disabled{cursor:not-allowed}"
+    },
+    {
+      "name": "Numeric Field",
+      "kind": "input",
+      "description": "Visible label and native number input. The live app uses Streamlit number-input controls; this portable sample shows only the shared project typography, ink and focus override.",
+      "html": "<label class=\"ds-field-label\">Measured views <input class=\"ds-number\" type=\"number\" min=\"4\" max=\"360\" step=\"4\" value=\"48\"></label>",
+      "css": ".ds-field-label,.ds-number{font-family:sans-serif;color:#172F3A;}.ds-number:focus-visible{outline:3px solid #007F87;outline-offset:2px;}"
+    },
+    {
+      "name": "Workspace Navigation",
+      "kind": "nav",
+      "description": "Explore, Public CT, Detective and Atlas are a native horizontal radio group. Selection follows application state, including restored bundles. The preview retains radio semantics and does not invent a custom tab system.",
+      "html": "<nav class=\"ds-workspace\" aria-label=\"Workspace\"><label><input type=\"radio\" name=\"ds-workspace\" checked> Explore</label> <label><input type=\"radio\" name=\"ds-workspace\"> Public CT</label> <label><input type=\"radio\" name=\"ds-workspace\"> Detective</label> <label><input type=\"radio\" name=\"ds-workspace\"> Atlas</label></nav>",
+      "css": ".ds-workspace{font-family:sans-serif;color:#172F3A;}.ds-workspace input{accent-color:#007F87}.ds-workspace input:hover{cursor:pointer}.ds-workspace input:focus-visible{outline:3px solid #007F87;outline-offset:2px;}"
+    },
+    {
+      "name": "Scientific Evidence Caption",
+      "kind": "custom",
+      "description": "The recurring explanatory caption keeps the shared attenuation scale and scope next to the prepared reference and computed reconstructions. Public CT displays the original source separately in HU; its display window does not affect simulation. Caption size remains a Streamlit default.",
+      "html": "<p class=\"ds-evidence-caption\">Shared grayscale: 0 to 0.6 attenuation units. Values outside this range are display-clipped; metrics use the full arrays.</p>",
+      "css": ".ds-evidence-caption{font-family:sans-serif;color:#172F3A;}"
+    },
+    {
+      "name": "Public CT Source Attribution",
+      "kind": "custom",
+      "description": "A native expander preserves source links, origin and modification notes, checksum and licence text. This portable sample shows the source-link portion; the live app includes the complete saved attribution and licence.",
+      "html": "<details class=\"ds-source\"><summary>Data source, attribution &amp; licence</summary><p><a href=\"https://www.slicer.org/wiki/Documentation/4.10/Modules/SampleData\">3D Slicer sample-data documentation</a> \u00b7 <a href=\"https://discourse.slicer.org/t/origin-of-ct-chest-sample-data/37731\">Source and licensing clarification</a></p></details>",
+      "css": ".ds-source{font-family:sans-serif;color:#172F3A}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Quiet scientific workstation",
+    "overview": "The interface puts measurements and their limitations beside the images they produce. Its white work surface, cool supporting surface and restrained teal controls continue the research report's visual language. Numerical images provide the visual detail; explanatory text helps the reader compare them.\n\nThis is an operating tool built with native Streamlit controls. The project owns the theme, compact heading hierarchy, outer layout, focus override and scientific figure conventions. Streamlit owns the remaining control geometry and state styling; those framework defaults are not a separate custom component system.",
+    "keyCharacteristics": [
+      "Applied acquisition settings stay beside the displayed results.",
+      "Scientific comparisons share scales and coordinate conventions.",
+      "Original CT pixels, prepared references and simulated reconstructions retain distinct labels and units.",
+      "Teal identifies interaction; gold identifies the known target outline.",
+      "Secondary evidence appears in expanders after the main comparison.",
+      "Native controls retain their keyboard and disabled-state behaviour."
+    ],
+    "rules": [
+      {
+        "name": "The Shared Scale Rule",
+        "body": "Compare the prepared reference, FBP and SART images with the same grayscale limits. Image appearance must not silently rescale each method. Display the original CT separately in labelled Hounsfield units with its selected display window.",
+        "section": "colors"
+      },
+      {
+        "name": "The Meaningful Colour Rule",
+        "body": "Keep action colour, target annotation and numerical error colour distinct. A failed prediction uses warning feedback; an exact successful replay uses success feedback.",
+        "section": "colors"
+      },
+      {
+        "name": "The Units Beside Evidence Rule",
+        "body": "Keep image scales, physical units and the meaning of each metric close to their figures or table. Captions are part of the scientific reading order.",
+        "section": "typography"
+      },
+      {
+        "name": "The Applied State Rule",
+        "body": "Result headings, metrics and downloads describe the last applied experiment. Pending form edits must not relabel an older reconstruction.",
+        "section": "layout"
+      },
+      {
+        "name": "The Source and Simulation Rule",
+        "body": "Keep the acquired CT source, its prepared reference and the simulated measurements visibly distinct. Preserve source attribution and licence access beside the experiment, and never imply that a display window changes the numerical experiment.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** preserve one action accent and the separate scientific annotation colours.",
+      "**Do** align comparison images and retain their shared numerical display limits.",
+      "**Do** keep units, assumptions and applied settings beside the evidence they explain.",
+      "**Do** label the original HU display separately from the prepared reference and simulated reconstructions.",
+      "**Do** keep source attribution, modification notes and licence access with Public CT experiments.",
+      "**Do** use native control states, visible labels and keyboard focus treatment.",
+      "**Do** let supporting details expand after the main comparison."
+    ],
+    "donts": [
+      "**Don't** auto-normalise each reconstruction image independently.",
+      "**Don't** render missing angular measurements as measured zeros.",
+      "**Don't** style incorrect guesses or differing replay as successful outcomes.",
+      "**Don't** present a known-location contrast measurement as a detection probability.",
+      "**Don't** assign lesion-recovery metrics to Public CT without verified target masks.",
+      "**Don't** present the acquired CT reconstruction as anatomical ground truth or its simulated projections as original scanner measurements.",
+      "**Don't** turn unspecified framework defaults into invented project tokens."
+    ]
+  }
+}
