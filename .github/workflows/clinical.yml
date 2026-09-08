@@ -1,0 +1,38 @@
+name: Clinical CPU reconstruction and offline repeat
+on:
+  workflow_dispatch:
+  push:
+    paths: ['clinical/**', 'tests/test_clinical.py', '.github/workflows/clinical.yml']
+  pull_request:
+    paths: ['clinical/**', 'tests/test_clinical.py', '.github/workflows/clinical.yml']
+permissions:
+  contents: read
+jobs:
+  clinical:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9
+        with:
+          version: "0.12.10"
+      - run: uv sync --locked --project clinical
+      - name: Reconstruct a verified acquired patient scan
+        run: uv run --locked --project clinical python clinical/reconstruct.py --download --size 64 --views 89 356 --output runs/clinical
+      - name: Repeat using only cached source files
+        run: uv run --locked --project clinical python clinical/reconstruct.py --size 64 --views 356 --output runs/clinical-repeat
+      - name: Compare calculated volumes
+        run: uv run --locked --project clinical python clinical/verify_run.py runs/clinical runs/clinical-repeat --check-reference
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clinical-${{ matrix.os }}
+          path: |
+            runs/clinical/report.json
+            runs/clinical/comparison.png
+            runs/clinical/DATA-LICENSE.txt
+            runs/clinical-repeat/replay.json

@@ -90,3 +90,39 @@ CI now runs the JavaScript kernel tests on Linux, Apple Silicon and Intel and ex
 - A named rectangular region exported and restored. Reopening the downloaded run reproduced the browser image exactly; the Node replay maximum difference was 3.19e-16, within 1e-9.
 - CSV export contained all 100,940 reading pairs, including 88,340 unused readings; every exported error equalled predicted minus measured.
 - Synthetic 360-view reconstruction also completed in the browser. The diagram counter uses an opaque DOM overlay over a high-density square canvas.
+
+
+### Measured patient reconstruction and expanded regression (2026-09-08)
+
+The optional clinical workflow reconstructs COBRA2026 A002 from 356 acquired
+cone-beam detector images with the recorded per-view offsets. CPU FDK ran on
+Apple Silicon using the separate locked environment. A 96 × 62 × 96 volume
+was compared with the authors' full-data RTK reference through a fixed
+documented coordinate conversion and the supplied field-of-view mask.
+Reference RMSE was 62.83, 31.86 and 16.99 in the authors' HU scale for
+89, 178 and 356 views. A 64-grid check gave 61.77 and 17.65 for 89 and 356 views.
+The reference uses the same algorithm family, so this is numerical
+reproduction evidence, not an independent clinical accuracy assessment.
+
+A full-data offline repeat on this Mac matched every attenuation voxel
+exactly, within the declared 1e-6 tolerance. The dedicated workflow now runs
+CPU reconstruction and offline repeat on both Mac architectures and checks
+full-data reference RMSE below 25 and correlation above .995 at the tested
+64-grid configuration. These are regression bounds for this pinned case,
+not clinical acceptance criteria. See the current workflow status for
+remote results. [Setup, limitations and numerical outputs](../clinical/README.md).
+
+The main test suite has 85 Python checks and 18 JavaScript checks. Eight new
+Python checks cover clinical exposure calibration, count binning before the
+logarithm, coordinate landmarks, physical-centre resampling, masked metrics,
+view selection, input corruption and bounded atomic downloads. The previous
+84-test suite passed in full; the added download check and affected live/clinical
+checks then passed together (16 checks). Ruff passed for application, tests,
+scripts and the clinical workflow.
+
+The live benchmark now records 120 results: three acquired HTC objects, four
+body CT slices with simulated projections, and an analytic control, each at
+three view budgets and five reconstruction settings. A separate rerun matched
+all committed statistics within 1e-9 and verified source/reference hashes.
+The Pages workflow runs this regression before publication. These small
+samples do not establish transfer to unseen patients.

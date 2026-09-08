@@ -1,0 +1,12 @@
+[project]
+name = "missing-angle-clinical"
+version = "0.1.0"
+description = "CPU cone-beam reconstruction of a verified public clinical acquisition"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "itk-rtk==2.7.0.post1",
+  "numpy==2.5.3",
+  "scipy==1.18.1",
+  "matplotlib>=3.10,<4",
+  "pyyaml>=6,<7",
+]

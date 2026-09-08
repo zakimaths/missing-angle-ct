@@ -8,6 +8,8 @@ The public site now includes a **live reconstruction calculator with three acqui
 
 ## Run on your Mac
 
+**Measured patient projections are available through the optional [clinical CPU workflow](clinical/README.md).** It reconstructs a full 3D volume from 356 acquired views in one public COBRA2026 case, compares subsets with the authors' reference, and verifies an offline repeat. This workflow has its own locked dependencies; the browser's body examples remain simulations. [Measured clinical results](clinical/README.md#observed-comparison).
+
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) (`brew install uv` if you use Homebrew), then:
 
 ```sh
@@ -62,7 +64,7 @@ uv run --locked --no-editable ruff check src tests scripts app
 uv run --locked --no-editable pytest
 ```
 
-The local installed package passed **77 Python tests and 18 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
+The local installed package passed **85 Python tests and 18 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
 
 The scientific GitHub workflow runs Apple Silicon and Intel Mac checks and replays a shared experiment on both architectures. The Pages workflow tests and builds the demo on Linux before deployment. Workflow badges/status on GitHub show the current remote result; [validation records](docs/VALIDATION.md) distinguish local observations from remote execution. Cross-platform comparisons use stated tolerances, not a promise of universal bitwise identity.
 

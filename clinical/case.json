@@ -1,0 +1,14 @@
+{
+  "case": "COBRA2026 A002",
+  "record": "https://zenodo.org/records/21322350",
+  "license": "CC BY-NC 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "attribution": "Thummerer, Rit, Kamp, Maspero, Boné and colleagues, COBRA2026, version 1.0.0 (2026)",
+  "files": {
+    "projections.mha": {"item": "6a4e339c870b9498e3b5d3b3", "bytes": 109760974, "sha256": "2309ed8ab0a3bce676f7ec8d5c12dbaa6d21e1fadd45de37e3d2f55d1cc37089"},
+    "geometry.xml": {"item": "6a4e3399870b9498e3b5d3ad", "bytes": 168927, "sha256": "57a2b6dcab1c6b0f8584d6820c421d9131afc9ef6b64e90d4b3935634ae876a0"},
+    "reconstruction.yaml": {"item": "6a52b729870b9498e3b70c9c", "bytes": 4111, "sha256": "b6fbaa597bb66ddd6422dda040c7edc0c44eaf77a94848a1982c22ae5fc4395d"},
+    "cbct_rtk.mha": {"item": "6a52b72c870b9498e3b70c9f", "bytes": 39644577, "sha256": "eaee807089317d0ca34cfe764458d23c683b46ae7fe76ef0fd0164babd58a1a5"},
+    "fov_cbct.mha": {"item": "6a4e33a5870b9498e3b5d3b6", "bytes": 730981, "sha256": "f3850078433c8f5a8f55d763f41597599a2f711f7ad127daeb21009d4430e7e7"}
+  }
+}

@@ -1,0 +1,19 @@
+COBRA2026 A002 comparison outputs
+
+Source: Thummerer, Adrian; Rit, Simon; Kamp, Florian; Maspero, Matteo;
+Boné, Thomas; and colleagues. COBRA2026: a large-scale multicenter pelvic
+CBCT projection dataset, version 1.0.0 (2026).
+https://zenodo.org/records/21322350
+
+Source data and these derived numerical/image outputs are licensed under
+Creative Commons Attribution-NonCommercial 4.0 International:
+https://creativecommons.org/licenses/by-nc/4.0/
+
+Modifications by the Missing-Angle CT project: detector binning, exposure
+normalisation, selection of acquired views, reduced-resolution CPU FDK
+reconstruction, documented coordinate conversion, reference resampling,
+masked error statistics and comparison figures. No institutional endorsement
+is implied. The source reference is itself a reconstruction estimate.
+
+The main application code is MIT. The adapted clinical reconstruction module
+is Apache-2.0; see clinical/LICENSE and clinical/NOTICE.
