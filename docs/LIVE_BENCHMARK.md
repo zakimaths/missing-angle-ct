@@ -1,6 +1,6 @@
 # Live reconstruction benchmark
 
-Run `node scripts/benchmark_live.cjs` to reproduce the report, or add `--check` to compare all 120 results with the committed values at absolute tolerance 1e-9. Source and reference checksums are recorded.
+Run `node scripts/benchmark_live.cjs` to reproduce the report, or add `--check` to compare all 120 results with the committed values at absolute tolerance 1e-9. Stored input/reference file checksums are recorded. The analytic control records its generator checksum; generated floating-point values are checked numerically.
 
 Eight samples: three measured HTC2022 objects, four body slices from two real CT volumes with independently simulated projections, and one analytic disk object. HTC references are the authors’ full-data FBP estimates. Body references are the prepared source images, resampled to the 96 × 96 reconstruction grid. Only the disks have known continuous ground truth.
 

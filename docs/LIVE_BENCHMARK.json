@@ -4,36 +4,35 @@
   "node": "v24.19.0",
   "sources": {
     "ta": {
-      "input_sha256": "baff616280624edf13b8250f3b0f76e1799175b49e3458002a1f2d0d61d4c449",
-      "reference_sha256": "8f5015afbe9474ab8c8af8e2e905dcb14e0a4586ea9209160808490e077567e1"
+      "input_sha256": "d0d74a1c53eae71eab6346091ac9e7f824930f8f2d510fcf47e1b8a9978989ca",
+      "reference_sha256": "5e022bfefde04167c2c9628176cbb6b7cc3eef219cbc6fed3452f7bbf58dfb8f"
     },
     "tb": {
-      "input_sha256": "ddeadf5a176d746f8258f6cda0dc3183bd06ea57e555ec9a8899462d6bb82959",
-      "reference_sha256": "ecdc5f85c04e9a7d928cbddd452d39b1d58bac63acd3dff5a214bb5cca6b5ec3"
+      "input_sha256": "ed152ce64c83ab860b864879774d0a822be12b0febb2311b3b898d0ecfbfdac0",
+      "reference_sha256": "f5c43f05aae71dc7c8113f9fb1a39c3bc22326b4adcefd31dc2cb6712668025c"
     },
     "tc": {
-      "input_sha256": "5922737354321d881d1c1c3888b55de33b1362ea0627079c2ded23e006768c3e",
-      "reference_sha256": "13ae6d1634ad2f0518824c547aeb33a778a62fded5434900cec1cda146513670"
+      "input_sha256": "e860ff93ddc90c41f75ed62fc96bad210b042fd8303cbf425a0b30c27a7d682c",
+      "reference_sha256": "428d4c0cdec76ef533bd02f95bac0a4d9c856c63ace6d611b4579aef84a7f771"
     },
     "chest-64": {
-      "input_sha256": "e0521cf09e95939414a8876efb41d0f32139e56b1fdd0ed6266ebac718df6acd",
-      "reference_sha256": "60c145cee8ed0cf2a8788c7e4db634b588ba464c2dbbc8d6383eed3a60b08d62"
+      "input_sha256": "9d6fe8fb8df201df46ef55b514548d7e97edf1ffb98ed9d32264adc8c98fb028",
+      "reference_sha256": "ac3b4726635b56d35c63bc780a2abc97cf19e50e33aacb9e887551a3ccb57a55"
     },
     "chest-96": {
-      "input_sha256": "30de7f18f9c7c2bd5d8ca47f194e837b4dc9b2ffada3bc5c24d0f9675dd9d3d0",
-      "reference_sha256": "7f1d4bb14ba58056ca3deb97e25461101a07589cff8f5ec688e4bd179aaa5757"
+      "input_sha256": "25237d2541c7ddf82925bab437b9e9b39cb57c989c1167850bdfb1747d2f4ab8",
+      "reference_sha256": "39dcd285e541c983f1391f50ae98a45a19c5d426457cd9916008e35135a2ca73"
     },
     "abdomen-400": {
-      "input_sha256": "67fe198986743e80bc8a24a7d80ad0ab207bd4e5e400b0a46f3e9bb636388226",
-      "reference_sha256": "a0ab902e649f10c2feaba80a954165eb52d9e110365a564038791f515b02bfd9"
+      "input_sha256": "7a0263ae7cd2c7105156d8792787851d898fc93f6f8ee1c6d8efa79149e5bc21",
+      "reference_sha256": "dc1471d9c4f987f3dd800930b82394b704086e3bc9ec2bc7d27d277734ef5e01"
     },
     "abdomen-480": {
-      "input_sha256": "a979ba302fb2a7fdcc89dcdc6dadc4ef415253aaad1e7aaa618178a3ce51fc94",
-      "reference_sha256": "54b0b07a1e61ab0709d8b6f6379572b8f0843871697a08189535b61ab2a3e50c"
+      "input_sha256": "d1d1def1bcd3fb4ab7dea65ae6c9d4fbfb882889d0de092aae4952cd12bb4e7d",
+      "reference_sha256": "65f55d1c45ab368dd1853f6d25b838306f516bf3c3c39b095b575693d92bff35"
     },
     "synthetic": {
-      "input_sha256": "cdb6bf44651c2b8c9b79e965c80ecd48d6e0d91e5da4804a189bd206af0296c6",
-      "reference_sha256": "ce6cc1e6d90f42064b11a30e1ff77c1fd822ef93d9218233603a39baecaf3ab6"
+      "generator_sha256": "0c84bb0fa36ef67243967bf89ea16686c2c381c879a7961e695f8f68f8e97846"
     }
   },
   "description": "Three measured HTC objects, four real body slices with simulated projections, and exact analytic disks. Body slices come from two volumes. Authors FBP and source CT references are estimates, not anatomical truth. Each enhancement starts from the same first pass; no reference enters the solver. No smoothing selection or parameter fitting occurs.",
