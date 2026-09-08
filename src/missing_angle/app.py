@@ -3,7 +3,6 @@ import base64
 import json
 
 import streamlit as st
-import streamlit.components.v1 as components
 
 from missing_angle.bundle import (experiment_id, export_bundle, load_bundle, verify_replay)
 from missing_angle.config import ExperimentConfig
@@ -268,7 +267,7 @@ def public_ct():
     with right:
         st.markdown("### Watch the image take shape")
         if "history" in exp.arrays:
-            components.html(player_html(exp.arrays["history"], smoothing=bool(exp.geometry["refinement"]["weight"])), height=510, scrolling=True)
+            st.iframe(player_html(exp.arrays["history"], smoothing=bool(exp.geometry["refinement"]["weight"])), height="content")
         else:
             st.info("This older experiment has no saved steps. Press Reconstruct this slice to record them.")
         st.caption("Each pass reuses all available viewing angles. The method corrects the image and uses smoothing when its strength is above zero. "

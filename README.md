@@ -19,7 +19,7 @@ uv run --locked --no-editable angle app --open
 
 Or double-click **Launch Missing Angle.command** after installing uv. Setup downloads the pinned Python and dependencies; the app and bundled images then work offline. Open `http://127.0.0.1:8501`, and stop with Control-C in Terminal. Choose another port with `angle app --port 8502`.
 
-Python 3.12.14 is selected in `.python-version`; `uv.lock` records exact dependencies. `--no-editable` avoids a `.pth` import issue observed on this Mac. After changing source code, rerun the launch command and restart the server.
+Use uv 0.12.10 or newer for a fresh Python download. The Mac workflow pins uv 0.12.10 and installs Python directly, because setup-python does not distribute this security release for macOS. Python 3.12.14 is selected in `.python-version`; `uv.lock` records exact dependencies. `--no-editable` avoids a `.pth` import issue observed on this Mac. After changing source code, rerun the launch command and restart the server.
 
 ## What students can do
 
