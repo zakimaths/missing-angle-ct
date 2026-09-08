@@ -35,7 +35,9 @@ async function main(){
    assert(report.scroll<=report.width,JSON.stringify(report));
   }
   async function accessibility(stage){
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
    const r=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+   if(r.violations.length){console.log('Contrast detail',JSON.stringify(r.violations[0].nodes[0]));console.log('Page colours',await page.evaluate(()=>({theme:document.documentElement.dataset.theme,background:getComputedStyle(document.body).backgroundColor,foreground:getComputedStyle(document.body).color})));await page.screenshot({path:path.join(root,'output/playwright/contrast-failure.png')});}
    assert.deepEqual(r.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],stage);
    console.log(`${engine.name()} ${stage}: axe passed (${r.passes.length} checks; ${r.incomplete.length} require review)`);
    for(const item of r.incomplete)console.log('Manual review:',item.id,JSON.stringify(item.nodes.map(n=>({target:n.target,summary:n.failureSummary}))));

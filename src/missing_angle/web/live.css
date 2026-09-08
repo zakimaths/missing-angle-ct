@@ -15,3 +15,8 @@
 
 /* Contain the native option text on narrow WebKit layouts. */
 .live-lab select{overflow:hidden;text-overflow:ellipsis}
+
+/* Some native WebKit menus paint beyond the select itself. Contain the field,
+   and keep a visible focus outline outside that boundary. */
+.live-lab label:has(select){overflow:hidden}
+.live-lab label:has(select):focus-within{outline:3px solid var(--accent);outline-offset:3px}
