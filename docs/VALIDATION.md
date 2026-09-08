@@ -72,3 +72,11 @@ Reference target contrast is 0.1484289497. These values describe one synthetic c
 - Bitwise identity of ZIP files, screenshots or floating-point output on every supported dependency/platform combination.
 
 The application preserves sufficient data to inspect and replay a run. That is narrower than guaranteeing that every future environment will reproduce every bit. See [methods](METHODS.md) for the numerical contract and [README](../README.md) for exact commands.
+
+## Version 0.4: live measured projections
+
+Locally passed 70 Python tests and 9 JavaScript tests. The new kernel was checked against analytic ray geometry, disk convergence, the adjoint identity, three independent HTC2022 FBP references, measurement isolation and repeated runs. Browser import/recalculation of a saved 360-view run matched the headless output to a maximum difference of 3.68e-16. A 721-view calculation and subsequent refinement completed in the browser; the same worker also ran in the local Streamlit iframe. Original HTC2022 MATLAB import preserved 721 views and converted the detector spacing correctly.
+
+Visual checks covered the view gallery, selected-angle profile, mobile layout, 200% CSS layout zoom and keyboard view navigation. Non-animated calculation displays the final image and keeps all numerical snapshots for manual inspection; reduced-motion preferences select this mode initially.
+
+CI now runs the JavaScript kernel tests on Linux, Apple Silicon and Intel and exchanges a measured-data JSON run between the two Mac architectures. Check the workflow result for the current commit; these additions do not turn the specimen tests into clinical validation.

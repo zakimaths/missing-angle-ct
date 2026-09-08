@@ -397,6 +397,21 @@ def atlas():
             "Hold span and noise fixed when changing view count. These three starting points are not a ranking of methods.")
 
 
+
+def live_reconstruction():
+    from missing_angle.live import import_htc_mat, live_html
+    custom = None
+    with st.expander("Open an original HTC2022 MATLAB projection file"):
+        st.caption("Optional: open a CtDataFull or CtDataLimited .mat file. Projection JSON can be opened directly in the lab below.")
+        uploaded = st.file_uploader("HTC projection file (.mat)", type=["mat"], max_upload_size=16, key="measured_mat")
+        if uploaded is not None:
+            try:
+                custom = import_htc_mat(uploaded.getvalue())
+            except (ValueError, TypeError, KeyError, OSError) as exc:
+                st.error(f"Could not open this projection file: {exc}")
+                return
+    st.iframe(live_html(custom), height="content")
+
 def main():
     st.set_page_config(page_title="Missing-Angle CT Detective", page_icon="◌", layout="wide",
                        initial_sidebar_state="auto")
@@ -437,18 +452,18 @@ def main():
     st.html('<header class="ma-heading"><h1 id="missing-angle-ct-detective">'
             'Missing-Angle CT Detective</h1>' + social_links("header") + '</header>')
     st.markdown("**How does a CT scanner build an image—and what happens when some views are missing?**")
-    st.write("This lab is for students learning CT reconstruction. Start with a real chest CT slice, choose how many X-ray views "
-             "are available, and watch a computer rebuild the image. Compare methods to see how missing angles, noise and smoothing change the result.")
+    st.write("This lab is for students learning CT reconstruction. Start with acquired X-ray measurements, choose which views "
+             "to use, and calculate a new image. Inspect the views as they are incorporated, then refine the result with further corrections.")
     if "pending_mode" in st.session_state:
         st.session_state.mode = st.session_state.pop("pending_mode")
-    st.session_state.setdefault("mode", "Public CT")
-    mode = st.radio("Choose an activity", ["Public CT", "Explore", "Detective", "Atlas"], horizontal=True,
-                    format_func=lambda x: {"Public CT": "Real CT lab", "Explore": "Synthetic practice", "Detective": "Feature challenge", "Atlas": "Artifact examples"}[x],
+    st.session_state.setdefault("mode", "Measured")
+    mode = st.radio("Choose an activity", ["Measured", "Public CT", "Explore", "Detective", "Atlas"], horizontal=True,
+                    format_func=lambda x: {"Measured": "Reconstruct from views", "Public CT": "CT image experiments", "Explore": "Synthetic practice", "Detective": "Feature challenge", "Atlas": "Artifact examples"}[x],
                     key="mode", label_visibility="collapsed")
     st.divider()
-    {"Explore": explore, "Public CT": public_ct, "Detective": detective, "Atlas": atlas}[mode]()
+    {"Measured": live_reconstruction, "Explore": explore, "Public CT": public_ct, "Detective": detective, "Atlas": atlas}[mode]()
     st.divider()
-    st.caption("Learn with real CT images and optional synthetic practice. X-ray measurements are simulated. This is a teaching lab, not a diagnostic tool.")
+    st.caption("The live lab reconstructs measured projections. Separate CT-image experiments simulate measurements. This is a teaching lab, not a diagnostic tool.")
     st.html(social_links("footer"))
 
 

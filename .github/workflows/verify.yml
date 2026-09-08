@@ -17,12 +17,16 @@ jobs:
       - run: uv sync --locked --no-editable
       - run: uv run --locked --no-editable ruff check src tests app
       - run: uv run --locked --no-editable pytest
+      - run: node --test tests/live_reconstruction.test.cjs
       - run: uv run --locked --no-editable angle run --config experiments/baseline.json --output runs/reference.zip
       - run: uv run --locked --no-editable angle public-ct --slice 80 --config experiments/baseline.json --refine --output runs/public-ct.zip
+      - run: node scripts/replay_live.cjs src/missing_angle/web/projection-data/ta.json --output runs/measured.json
       - uses: actions/upload-artifact@v4
         with:
           name: reference-measurements
-          path: runs/*.zip
+          path: |
+            runs/*.zip
+            runs/measured.json
   replay:
     needs: reference
     strategy:
@@ -38,12 +42,14 @@ jobs:
       - run: uv python install
       - run: uv sync --locked --no-editable
       - run: uv run --locked --no-editable pytest
+      - run: node --test tests/live_reconstruction.test.cjs
       - uses: actions/download-artifact@v4
         with:
           name: reference-measurements
           path: runs
       - run: uv run --locked --no-editable angle replay runs/reference.zip --output runs/replay.json
       - run: uv run --locked --no-editable angle replay runs/public-ct.zip --output runs/public-ct-replay.json
+      - run: node scripts/replay_live.cjs runs/measured.json --output runs/measured-replay.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

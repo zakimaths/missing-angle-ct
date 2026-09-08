@@ -20,6 +20,7 @@ jobs:
       - run: uv sync --locked --no-editable
       - run: uv run --locked --no-editable ruff check src tests scripts app
       - run: uv run --locked --no-editable pytest
+      - run: node --test tests/live_reconstruction.test.cjs
       - run: uv run --locked --no-editable python scripts/build_demo.py
       - run: uv run --locked --no-editable python scripts/verify_demo.py
       - uses: actions/upload-pages-artifact@v3

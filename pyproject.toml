@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "missing-angle-ct"
-version = "0.3.1"
+version = "0.4.0"
 description = "Student CT reconstruction lab with real images, iteration playback and reproducible experiments"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
@@ -27,7 +27,7 @@ dev = ["pytest>=8,<10", "ruff>=0.12,<1"]
 packages = ["src/missing_angle"]
 
 [tool.uv]
-cache-keys = [{ file = "pyproject.toml" }, { file = "README.md" }, { file = "src/**/*.py" }, { file = "src/missing_angle/data/*.npy" }, { file = "src/missing_angle/data/*.json" }, { file = "src/missing_angle/data/*.txt" }]
+cache-keys = [{ file = "pyproject.toml" }, { file = "README.md" }, { file = "src/**/*.py" }, { file = "src/missing_angle/web/**" }, { file = "src/missing_angle/data/*.npy" }, { file = "src/missing_angle/data/*.json" }, { file = "src/missing_angle/data/*.txt" }]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

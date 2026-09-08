@@ -1,0 +1,12 @@
+HTC2022 measured projection examples
+Source: https://zenodo.org/records/8041800 (v1.4.0, 15 June 2023)
+Authors: Alexander Meaney, Fernando Silva de Moura, Markus Juvonen, Samuli Siltanen.
+Licence: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+
+Changes: selected teaching objects TA, TB and TC; all 721 acquired angles retained;
+560 corrected log-attenuation detector readings averaged in groups of four to
+140 bins; values rounded to eight decimal places; scanner metadata converted to
+an explicit millimetre-based fan-beam geometry. See each JSON source field for
+checksums. No reconstructed reference image is included in these inputs.
+No endorsement by the original authors is implied.

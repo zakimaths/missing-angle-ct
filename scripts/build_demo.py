@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 import json
 import shutil
+import runpy
 
 from missing_angle.bundle import export_bundle, experiment_id, provenance
 from missing_angle.config import ExperimentConfig
@@ -73,4 +74,7 @@ def build(destination):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, default=Path('demo'))
-    build(parser.parse_args().output)
+    destination = parser.parse_args().output
+    build(destination)
+    # Keep the live calculator independent of recorded reconstruction assets.
+    runpy.run_path(str(Path(__file__).with_name("build_live_demo.py")), init_globals={"LIVE_DESTINATION": destination})

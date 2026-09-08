@@ -1,10 +1,10 @@
 # Missing-Angle CT Detective
 
-**A student lab for understanding how CT images are reconstructed—and what missing views can hide.** Start with a real chest CT slice, change the available X-ray views, compare reconstruction methods and watch the actual correction steps.
+**Reconstruct a new image from hundreds of measured X-ray views, directly on your device.** Inspect the angles, choose a view budget, watch the calculation and refine the image. A student lab for learning what measurements can support—and what missing views can hide.
 
 [**Try the interactive demo**](https://zakimaths.github.io/missing-angle-ct/) · [Methods and measured improvements](docs/RECONSTRUCTION.md) · [Data source and licence](docs/PUBLIC_CT.md)
 
-The public demo contains **32 recorded experiments using eight real CT slices**. It runs on GitHub Pages without an account. The full local app computes new experiments on your Mac. The source CT images are real; the projections are simulated from those existing images. This is educational software, not a diagnostic tool or dose estimator.
+The public site now includes a **live reconstruction calculator with three acquired datasets, each containing 721 views**. It computes on your device from projection readings and scanner geometry; no existing reconstruction is used as an answer. Open your own projection JSON or an exported run. The Mac app also imports original HTC2022 MATLAB projection files. The separate gallery retains 32 recorded experiments on real chest images with simulated projections. [Live workflow, input format, data attribution and methods](docs/LIVE_RECONSTRUCTION.md). This is educational software, not a diagnostic tool or dose estimator.
 
 ## Run on your Mac
 
@@ -23,13 +23,14 @@ Use uv 0.12.10 or newer for a fresh Python download. The Mac workflow pins uv 0.
 
 ## What students can do
 
-- **Real CT lab** opens first. Choose a chest slice, viewing angles, coverage and noise; press **Reconstruct this slice**. Display windows help you see lung, soft tissue or bone.
+- **Reconstruct from views** opens first: inspect 721 measured angles, choose a subset, calculate from zero, pause or step one view, and refine with further corrections. Download and replay the run.
+- **CT image experiments** remain available. Choose a chest slice, viewing angles, coverage and noise; press **Reconstruct this slice**. Display windows help you see lung, soft tissue or bone.
 - **Watch the reconstruction** from the blank image through individual views in the first pass, then completed correction passes. Play, pause, step or scrub; no automatic animation starts on arrival.
 - **Compare methods:** filtered back projection (FBP), repeated correction (SART), and SART with total-variation smoothing. Switch between images and absolute difference maps, with a shared scale and optional centre zoom. Smoothing can remove both artifacts and useful detail.
 - **Download and recalculate** an experiment, including original pixels, measurements, settings and every saved step.
 - **Optional synthetic practice, feature challenge and artifact examples** use shapes with known answers to explain concepts that cannot be scored reliably on unlabelled real CT images.
 
-Version 0.3 preserves earlier synthetic and public-CT bundles. No trained model, AI service, GPU, database or user account is required.
+Version 0.4 preserves earlier synthetic and public-CT bundles. No trained model, AI service, GPU, database or user account is required.
 
 ## Reproduce an experiment
 
@@ -52,7 +53,7 @@ python3 -m http.server 8000 --directory demo
 
 Open `http://localhost:8000`. The builder computes eight slices × four acquisition conditions, actual iteration frames, original images, comparison images and downloadable experiments. It also writes `docs/reconstruction-results.json`, including a ten-pass unsmoothed control. Generated assets are excluded from Git; GitHub Actions rebuilds and deploys them to Pages on pushes to `main`.
 
-Pages serves recorded results; it cannot run the Python server. Use the local app for arbitrary new settings. See [GitHub's Pages documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
+Pages runs the new JavaScript reconstruction worker and also serves the recorded chest-image gallery. It cannot run the Python server; the local app adds MATLAB ingestion and the full earlier Python tools. See [GitHub's Pages documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
 
 ## Tests and reproducibility
 
@@ -61,13 +62,13 @@ uv run --locked --no-editable ruff check src tests scripts app
 uv run --locked --no-editable pytest
 ```
 
-The local installed package passed **67 tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
+The local installed package passed **70 Python tests and 9 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
 
 The scientific GitHub workflow runs Apple Silicon and Intel Mac checks and replays a shared experiment on both architectures. The Pages workflow tests and builds the demo on Linux before deployment. Workflow badges/status on GitHub show the current remote result; [validation records](docs/VALIDATION.md) distinguish local observations from remote execution. Cross-platform comparisons use stated tolerances, not a promise of universal bitwise identity.
 
 ## Real measured scanner data
 
-A separate [reproducible walnut probe](docs/MEASURED_DATA.md) reconstructs acquired fan-beam measurements using the published scanner matrix. It checks withheld-ray prediction and runs on the existing CPU stack. This prototype is available from the command line; integration into the student interface and DICOM import are proposed next steps.
+The [live measured-view lab](docs/LIVE_RECONSTRUCTION.md) is integrated into both the website and local app. A separate [walnut probe](docs/MEASURED_DATA.md) remains available as an independent SciPy baseline. DICOM image import is outside the projection-input workflow.
 
 ## Results and limits
 

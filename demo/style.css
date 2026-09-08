@@ -3,3 +3,5 @@
 .stage figcaption{min-height:112px}@media(max-width:600px){.stage figcaption{min-height:0}}
 
 .comparison-controls{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin:20px 0}.comparison-controls select{min-width:220px}.zoom{display:flex;align-items:center;gap:8px;min-height:44px}.zoom input{width:20px;height:20px;accent-color:var(--accent)}
+
+.intro{padding:18px 0 20px}.intro h1{font-size:clamp(30px,3.2vw,44px);margin:10px 0 16px}.intro h1 br{display:none}.intro>p:first-of-type{font-size:17px;max-width:80ch}

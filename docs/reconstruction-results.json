@@ -5,15 +5,15 @@
     "system_version": "25.6.0",
     "machine": "arm64",
     "packages": {
-      "missing-angle-ct": "0.3.1",
+      "missing-angle-ct": "0.4.0",
       "numpy": "2.5.3",
       "scipy": "1.18.1",
       "scikit-image": "0.26.0",
       "streamlit": "1.63.0",
       "matplotlib": "3.11.1"
     },
-    "source_sha256": "6ee024a3fc15235ea9b42c9dffbf3000b2f11578f493ad0bc0f140246393fbde",
-    "lock_sha256": "7dc11cc6faa5e938a393efd0d418d93408596a8e5b96030505bd2f29302c4954"
+    "source_sha256": "3e3d0131e17977af78293342c64eb94e81844f19890f9e58c5d3a11a49077ae7",
+    "lock_sha256": "3f60f8f8b326c0ac4e77da74d5862811be2dfc5eec63d359807f614ec43db166"
   },
   "development_slice": 80,
   "evaluation_slices": [

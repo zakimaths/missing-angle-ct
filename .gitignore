@@ -16,3 +16,10 @@ demo/assets/
 demo/experiments.json
 demo/reconstruction-results.json
 demo/DATA-LICENSE.txt
+
+# Copied from the packaged live calculator at build time.
+demo/live.css
+demo/live.js
+demo/projection-core.js
+demo/projection-worker.js
+demo/projection-data/

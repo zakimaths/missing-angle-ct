@@ -1,6 +1,6 @@
 # Real measured-data feasibility probe
 
-The student app currently reconstructs **simulated parallel-beam projections of real CT images**. The separate probe below reconstructs **acquired scanner measurements** using the supplied fan-beam matrix. It does not send fan-beam data into the app's parallel-beam solver.
+The student app now includes a [live HTC2022 measured-projection calculator](LIVE_RECONSTRUCTION.md), alongside the earlier simulated parallel-beam experiments on real CT images. The separate probe below reconstructs **acquired scanner measurements** using the supplied fan-beam matrix. It does not send fan-beam data into the app's parallel-beam solver.
 
 Download `Data82.mat` (8.1 MB) from [Hämäläinen et al., Tomographic X-ray data of a walnut, 2015](https://zenodo.org/records/1254206). The [Finnish Inverse Problems Society dataset page](https://fips.fi/open-datasets/x-ray-tomographic-datasets/tomographic-x-ray-data-of-a-walnut/) specifies CC BY 4.0. Attribution: Keijo Hämäläinen, Lauri Harhanen, Aki Kallonen, Antti Kujanpää, Esa Niemi and Samuli Siltanen. The probe adapts their Tikhonov example to the smaller Data82 matrix, using SciPy LSQR instead of MATLAB PCG. The source file is not committed.
 
@@ -28,4 +28,4 @@ All runs converged. An independent conjugate-gradient normal-equation solve agre
 2. Add local conventional CT DICOM import for slice browsing, display windows, physical distances, ROI statistics and line profiles. Importing a reconstructed CT file does not recover the original scanner projections.
 3. Extend to [HTC2022](https://zenodo.org/records/8041800), which supplies measured limited-angle data and geometry for physical plastic objects, using a verified fan-beam operator. Hold out entire objects for final evaluation.
 
-These are proposed integrations; the current website does not yet import DICOM or run the measured-data probe.
+Update in version 0.4: the website and Mac app now reconstruct HTC2022 measured projections using a direct fan-beam ray-length solver. The walnut SciPy probe remains separate. DICOM image import is still outside the projection workflow.
