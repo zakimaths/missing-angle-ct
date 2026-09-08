@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "owner": "zakimaths",
+  "collected_at": "2026-09-08T11:32:18+00:00",
+  "scope": "Public, directly owned, non-fork repositories; archived included",
+  "transform": "natural log(1 + count); unavailable values stay null",
+  "adoption_basis": "Reviewed ledger; documented lower bound, not total use",
+  "adoption_evidence": [],
+  "repositories": [
+    {
+      "repository": "zakimaths/dicom-deid-workbench",
+      "url": "https://github.com/zakimaths/dicom-deid-workbench",
+      "archived": false,
+      "raw": {
+        "stars": 0,
+        "forks": 0,
+        "contributors": 1,
+        "external_contributors": 0,
+        "documented_adoption": 0
+      },
+      "log1p": {
+        "stars": 0.0,
+        "forks": 0.0,
+        "contributors": 0.6931471805599453,
+        "documented_adoption": 0.0
+      },
+      "contributor_status": "available",
+      "sources": [
+        "https://api.github.com/repos/zakimaths/dicom-deid-workbench",
+        "https://api.github.com/repos/zakimaths/dicom-deid-workbench/contributors?per_page=100"
+      ]
+    },
+    {
+      "repository": "zakimaths/missing-angle-ct",
+      "url": "https://github.com/zakimaths/missing-angle-ct",
+      "archived": false,
+      "raw": {
+        "stars": 0,
+        "forks": 0,
+        "contributors": 1,
+        "external_contributors": 0,
+        "documented_adoption": 0
+      },
+      "log1p": {
+        "stars": 0.0,
+        "forks": 0.0,
+        "contributors": 0.6931471805599453,
+        "documented_adoption": 0.0
+      },
+      "contributor_status": "available",
+      "sources": [
+        "https://api.github.com/repos/zakimaths/missing-angle-ct",
+        "https://api.github.com/repos/zakimaths/missing-angle-ct/contributors?per_page=100"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="449" viewBox="0 0 1120 449" role="img" aria-labelledby="title desc">
+<title id="title">Public repository engagement, log scale with raw counts</title>
+<desc id="desc">All panels share natural log of one plus the count. Contributors include the owner and exclude bots. External adoption counts only reviewed public evidence. Missing values are not zero.</desc>
+<rect width="100%" height="100%" rx="12" fill="#ffffff"/>
+<g font-family="system-ui, sans-serif" fill="#18333e">
+<text x="28" y="38" font-size="23" fill="#18333e" font-weight="650">zakimaths / Public repository engagement</text>
+<text x="28" y="64" font-size="13" fill="#526870" font-weight="400">Observed 2026-09-08T11:32:18+00:00 · Shared scale: ln(1 + count)</text>
+<text x="270" y="104" font-size="13" fill="#18333e" font-weight="650">Stars</text>
+<text x="477" y="104" font-size="13" fill="#18333e" font-weight="650">Forks</text>
+<text x="684" y="104" font-size="13" fill="#18333e" font-weight="650">Human contributors</text>
+<text x="891" y="104" font-size="13" fill="#18333e" font-weight="650">Documented external uses</text>
+<text x="28" y="143" font-size="17" fill="#18333e" font-weight="650">dicom-deid-workbench</text>
+<text x="28" y="166" font-size="12" fill="#526870" font-weight="400">Outside contributors: 0</text>
+<text x="270" y="143" font-size="18" fill="#18333e" font-weight="650">0</text>
+<path d="M270 163h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M270 163H270.00" stroke="#007f87" stroke-width="6"/>
+<circle cx="270.00" cy="163" r="4" fill="#007f87"/>
+<text x="267.0" y="188" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="317.6" y="188" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="442.0" y="188" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="477" y="143" font-size="18" fill="#18333e" font-weight="650">0</text>
+<path d="M477 163h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M477 163H477.00" stroke="#007f87" stroke-width="6"/>
+<circle cx="477.00" cy="163" r="4" fill="#007f87"/>
+<text x="474.0" y="188" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="524.6" y="188" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="649.0" y="188" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="684" y="143" font-size="18" fill="#18333e" font-weight="650">1</text>
+<path d="M684 163h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M684 163H734.59" stroke="#007f87" stroke-width="6"/>
+<circle cx="734.59" cy="163" r="4" fill="#007f87"/>
+<text x="681.0" y="188" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="731.6" y="188" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="856.0" y="188" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="891" y="143" font-size="18" fill="#18333e" font-weight="650">0 documented</text>
+<path d="M891 163h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M891 163H891.00" stroke="#007f87" stroke-width="6"/>
+<circle cx="891.00" cy="163" r="4" fill="#007f87"/>
+<text x="888.0" y="188" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="938.6" y="188" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="1063.0" y="188" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="28" y="265" font-size="17" fill="#18333e" font-weight="650">missing-angle-ct</text>
+<text x="28" y="288" font-size="12" fill="#526870" font-weight="400">Outside contributors: 0</text>
+<text x="270" y="265" font-size="18" fill="#18333e" font-weight="650">0</text>
+<path d="M270 285h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M270 285H270.00" stroke="#007f87" stroke-width="6"/>
+<circle cx="270.00" cy="285" r="4" fill="#007f87"/>
+<text x="267.0" y="310" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="317.6" y="310" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="442.0" y="310" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="477" y="265" font-size="18" fill="#18333e" font-weight="650">0</text>
+<path d="M477 285h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M477 285H477.00" stroke="#007f87" stroke-width="6"/>
+<circle cx="477.00" cy="285" r="4" fill="#007f87"/>
+<text x="474.0" y="310" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="524.6" y="310" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="649.0" y="310" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="684" y="265" font-size="18" fill="#18333e" font-weight="650">1</text>
+<path d="M684 285h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M684 285H734.59" stroke="#007f87" stroke-width="6"/>
+<circle cx="734.59" cy="285" r="4" fill="#007f87"/>
+<text x="681.0" y="310" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="731.6" y="310" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="856.0" y="310" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="891" y="265" font-size="18" fill="#18333e" font-weight="650">0 documented</text>
+<path d="M891 285h175" stroke="#d7e1e5" stroke-width="6"/>
+<path d="M891 285H891.00" stroke="#007f87" stroke-width="6"/>
+<circle cx="891.00" cy="285" r="4" fill="#007f87"/>
+<text x="888.0" y="310" font-size="11" fill="#526870" font-weight="400">0</text>
+<text x="938.6" y="310" font-size="11" fill="#526870" font-weight="400">1</text>
+<text x="1063.0" y="310" font-size="11" fill="#526870" font-weight="400">10</text>
+<text x="28" y="392" font-size="13" fill="#18333e" font-weight="400">Counts describe interest, contribution and documented use separately; no composite ranking.</text>
+<text x="28" y="415" font-size="13" fill="#526870" font-weight="400">Human contributors include the owner. No documented adoption is not proof of no adoption.</text>
+</g></svg>

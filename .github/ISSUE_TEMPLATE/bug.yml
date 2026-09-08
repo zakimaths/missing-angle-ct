@@ -1,0 +1,33 @@
+name: Report a reproducible problem
+description: Report a calculation, import, export or interface problem.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: Use public samples or a small generated fixture. Do not upload private scans, patient identifiers or credentials.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and observed behavior
+      description: Explain what you expected and what actually happened.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and acquisition settings
+      description: Include the sample, view count, selection, resolution, refinements and steps. A shared acquisition link is useful.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, operating system and version
+      placeholder: For example, Safari on macOS, or the local Python app and commit.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, error text or public reproduction
+      description: Attach only information you are permitted to share publicly. Include the reference definition for numerical comparisons.

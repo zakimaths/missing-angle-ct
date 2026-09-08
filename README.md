@@ -4,6 +4,22 @@
 
 [**Try the interactive demo**](https://zakimaths.github.io/missing-angle-ct/) · [Methods and measured improvements](docs/RECONSTRUCTION.md) · [Data source and licence](docs/PUBLIC_CT.md)
 
+[![Scientific checks and Mac replay](https://github.com/zakimaths/missing-angle-ct/actions/workflows/verify.yml/badge.svg)](https://github.com/zakimaths/missing-angle-ct/actions/workflows/verify.yml)
+[![Browser checks](https://github.com/zakimaths/missing-angle-ct/actions/workflows/browser.yml/badge.svg)](https://github.com/zakimaths/missing-angle-ct/actions/workflows/browser.yml)
+
+![Two reconstructions of the same acquired Helsinki object: 90 spread views and 90 consecutive views, shown on the same intensity scale.](demo/share-card.png)
+
+*Both images are calculated from measured projections. The view count is identical; angular coverage changes. [Settings and attribution](docs/launch/README.md).*
+
+## Try a complete experiment
+
+1. [Open Helsinki object A with 90 spread views](https://zakimaths.github.io/missing-angle-ct/?sample=ta&views=90&selection=spread&size=96#live-inputs) and start the reconstruction. No installation or account is needed.
+2. Compare spread and consecutive views at the same budget. Inspect the image differences, paired measurements and errors by angle.
+3. Save a checkpoint, apply further correction, and compare both image error and unused-measurement error. They can move in different directions.
+4. Download the run to preserve its measurements, settings and labels, then reopen it to reproduce the calculation.
+
+[Contribute or reproduce a result](CONTRIBUTING.md) · [Report a problem](https://github.com/zakimaths/missing-angle-ct/issues/new/choose) · [Share how you use it](https://github.com/zakimaths/missing-angle-ct/issues/new?template=usage.yml) · [Repository engagement and documented adoption](docs/engagement/README.md)
+
 The public site now includes a **live reconstruction calculator with three acquired object datasets with 721 views each, plus four real body CT samples with 360 simulated views each**. It computes on your device from projection readings and scanner geometry; no existing reconstruction is used as an answer. Open your own projection JSON or an exported run. The Mac app also imports original HTC2022 MATLAB projection files. [Body CT sources and reproducible preparation](docs/BODY_CT.md). Chest and abdominal samples include source previews, live reconstruction, enhancement, statistics and labels. The separate gallery retains 32 recorded experiments on real chest images with simulated projections. [Live workflow, input format, data attribution and methods](docs/LIVE_RECONSTRUCTION.md). This is educational software, not a diagnostic tool or dose estimator.
 
 ## Run on your Mac

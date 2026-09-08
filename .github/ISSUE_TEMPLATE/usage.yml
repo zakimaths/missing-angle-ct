@@ -1,0 +1,32 @@
+name: Share an independent use or reproduction
+description: Document how you used the project, with a public evidence link.
+title: "[Use] "
+body:
+  - type: markdown
+    attributes:
+      value: This is optional. Reports are reviewed before being counted as documented adoption. Share only public material you are authorised to disclose.
+  - type: input
+    id: project
+    attributes:
+      label: Project, course or independent reproduction
+    validations:
+      required: true
+  - type: input
+    id: evidence
+    attributes:
+      label: Public evidence link
+      description: Link to a repository, course page, paper or report that describes the use.
+    validations:
+      required: true
+  - type: textarea
+    id: use
+    attributes:
+      label: How was Missing-Angle CT used?
+      description: Describe the workflow, version or commit, and any results or changes. State your relationship to the project.
+    validations:
+      required: true
+  - type: textarea
+    id: friction
+    attributes:
+      label: What worked and what was difficult?
+      description: Concrete setup or workflow difficulties help improve the next release.
