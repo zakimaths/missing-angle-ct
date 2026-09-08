@@ -1,6 +1,12 @@
 {
   "name": "missing-angle-browser-checks",
   "private": true,
-  "scripts": {"test": "node checkpoints.cjs"},
-  "devDependencies": {"playwright": "1.63.0"}
+  "scripts": {
+    "test": "node checkpoints.cjs",
+    "test:demo": "node demo.cjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "playwright": "1.63.0"
+  }
 }

@@ -176,6 +176,9 @@ def live_html(custom=None):
             '<meta name="viewport" content="width=device-width,initial-scale=1"><title>CT reconstruction lab</title>'
             '<style>body{margin:0;background:white}'+(WEB/'live.css').read_text()+'</style></head><body>'
             + '<main aria-label="CT reconstruction workspace">' + panel + '</main><script>window.CT_EMBEDDED_DATA='+script_json(inputs)+';window.CT_WORKER_CODE='
-            + script_json(worker) + ';window.CT_EMBEDDED_REFERENCES=' + script_json(references) + ';</script><script>'+(WEB/'projection-core.js').read_text()
+            + script_json(worker) + ';window.CT_EMBEDDED_REFERENCES=' + script_json(references)
+            + ';window.CT_INITIAL_SAMPLE=' + script_json('custom' if custom is not None else 'ta')
+            + ';</script><script>'+(WEB/'configuration.js').read_text()
+            + '</script><script>'+(WEB/'projection-core.js').read_text()
             + '</script><script>'+(WEB/'study.js').read_text()
-            + '</script><script>'+(WEB/'live.js').read_text().replace("load('ta');", "load('custom');" if custom is not None else "load('ta');")+'</script></body></html>')
+            + '</script><script>'+(WEB/'live.js').read_text()+'</script></body></html>')

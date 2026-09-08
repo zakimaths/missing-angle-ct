@@ -5,7 +5,7 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / 'src/missing_angle/web'
 DEMO = Path(globals().get('LIVE_DESTINATION', ROOT / 'demo'))
-for name in ('live.css', 'live.js', 'study.js', 'projection-core.js', 'projection-worker.js'):
+for name in ('live.css', 'live.js', 'study.js', 'configuration.js', 'projection-core.js', 'projection-worker.js'):
     shutil.copy2(WEB / name, DEMO / name)
 shutil.copytree(WEB / 'projection-data', DEMO / 'projection-data', dirs_exist_ok=True)
 shutil.copytree(WEB / 'reference-data', DEMO / 'reference-data', dirs_exist_ok=True)

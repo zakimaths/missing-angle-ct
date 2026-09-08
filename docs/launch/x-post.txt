@@ -1,0 +1,5 @@
+I built Missing-Angle CT: reconstruct an image from measured X-ray views, watch it form, and test what missing angles change.
+
+Compare refinements, measure errors and replay your experiment in the browser.
+
+https://zakimaths.github.io/missing-angle-ct/

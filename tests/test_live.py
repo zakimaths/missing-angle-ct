@@ -41,6 +41,8 @@ def test_local_html_embeds_same_calculator_offline_without_script_injection():
     assert '</script><script>alert(1)' not in html
     assert 'window.CT_EMBEDDED_DATA=' in html
     assert 'window.CT_WORKER_CODE=' in html
+    assert 'window.CT_INITIAL_SAMPLE="custom"' in html
+    assert (WEB / "configuration.js").read_text() in html
     assert (WEB / 'projection-core.js').read_text() in html
     assert Path(WEB / 'live.js').read_text().replace("load('ta');", "load('custom');") in html
     assert 'window.CT_EMBEDDED_REFERENCES=' in html

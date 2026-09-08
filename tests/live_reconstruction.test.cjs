@@ -65,3 +65,12 @@ for(const key of ['ta','chest-64'])test(`worker restores exact ${key} checkpoint
   assert.deepEqual((await send({type:'restore',checkpoint:0})).image,baseline.image);
  }
 });
+
+test('public acquisition links validate settings and never include custom files',()=>{
+ const Config=require(path.join(WEB,'configuration.js'));
+ const url=new URL(Config.link('chest-64',{views:90,size:96,selection:'sector',privateLabel:'private'}));
+ assert.deepEqual(Config.read(url.search),{sample:'chest-64',views:90,size:96,selection:'sector'});
+ assert(!url.href.includes('private'));assert.equal(Config.read('?unrelated=value'),null);
+ for(const query of ['?sample=custom','?views=1','?views=Infinity','?size=512','?selection=other','?views=4.5'])assert.throws(()=>Config.read(query));
+ assert.throws(()=>Config.link('custom',{views:90,size:96,selection:'spread'}));
+});

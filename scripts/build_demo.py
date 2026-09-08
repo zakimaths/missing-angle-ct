@@ -1,4 +1,4 @@
-"""Rebuild the public student demo from the same measured-data solver as the local app."""
+"""Rebuild the public demo, calculated launch figures and recorded experiment gallery."""
 import argparse
 from pathlib import Path
 import json
@@ -78,3 +78,4 @@ if __name__ == '__main__':
     build(destination)
     # Keep the live calculator independent of recorded reconstruction assets.
     runpy.run_path(str(Path(__file__).with_name("build_live_demo.py")), init_globals={"LIVE_DESTINATION": destination})
+    runpy.run_path(str(Path(__file__).with_name("prepare_launch.py")), init_globals={"LAUNCH_DESTINATION": destination})

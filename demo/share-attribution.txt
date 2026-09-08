@@ -1,0 +1,5 @@
+Derived from HTC2022 v1.4.0, Meaney, Silva de Moura, Juvonen and Siltanen (2023).
+Source: https://zenodo.org/records/8041800
+Licence: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
+Two new 96 by 96 reconstructions, one nonnegative SART pass, 90 selected views.
+Identical 0 to 0.06 per-mm display scale. Images are calculated results, not ground truth.

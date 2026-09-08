@@ -27,7 +27,7 @@ function showComparison() {
 async function selectExperiment() {
   stop(); const request = ++selection;
   byId('result').hidden = true;
-  byId('status').textContent = 'Loading the selected CT images and recorded steps…';
+  byId('status').textContent = 'Loading the selected CT images and recorded steps…';byId('gallery-retry').hidden=true;
   const chosen = experiments.find(e => e.slice === Number(byId('slice').value) && e.protocol === byId('protocol').value);
   try {
     const images = [...chosen.frames, `${chosen.folder}/original.png`];
@@ -50,7 +50,7 @@ async function selectExperiment() {
     showStep(0); stop();
     byId('status').textContent = ''; byId('result').hidden = false;
   } catch {
-    if (request === selection) byId('status').textContent = 'The images could not load. Refresh the page to load the latest demo files, then try again.';
+    if(request===selection){byId('status').textContent='The comparison images could not load. Retry when your connection is available.';byId('gallery-retry').hidden=false;}
   }
 }
 byId('play').onclick = () => {
@@ -71,11 +71,17 @@ byId('comparison').onchange = byId('detail').onchange = showComparison;
 document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
 // Watch the whole player: on narrow screens the controls can be below the image.
 new IntersectionObserver(entries => { if (!entries[0].isIntersecting) stop(); }).observe(byId('player'));
-fetch('experiments.json?v=4', {cache: 'no-cache'}).then(r => { if (!r.ok) throw Error('Missing data'); return r.json(); }).then(data => {
-  experiments = data.experiments;
-  for (const index of [...new Set(experiments.map(e => e.slice))]) {
-    const option = document.createElement('option'); option.value = index; option.textContent = `Chest slice ${index}`; byId('slice').append(option);
-  }
-  byId('slice').value = '80'; byId('slice').disabled = byId('protocol').disabled = false;
+let libraryLoading=false,libraryLoaded=false;
+function loadLibrary() {
+ if(libraryLoading||libraryLoaded)return;
+ libraryLoading=true;byId('gallery-retry').hidden=true;byId('status').textContent='Loading the recorded comparison library…';
+ fetch('experiments.json?v=4', {cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('Missing data');return r.json();}).then(data=>{
+  experiments=data.experiments;
+  byId('slice').replaceChildren();
+  for(const index of [...new Set(experiments.map(e=>e.slice))]){const option=document.createElement('option');option.value=index;option.textContent=`Chest slice ${index}`;byId('slice').append(option);}
+  byId('slice').value='80';byId('slice').disabled=byId('protocol').disabled=false;libraryLoaded=true;
   return selectExperiment();
-}).catch(() => { byId('status').textContent = 'The experiment library could not load. Please refresh the page or download the local app from GitHub.'; });
+ }).catch(()=>{byId('status').textContent='The comparison library could not load. Retry when your connection is available.';byId('gallery-retry').hidden=false;}).finally(()=>{libraryLoading=false;});
+}
+byId('recorded-gallery').ontoggle=()=>{if(byId('recorded-gallery').open)loadLibrary();else stop();};
+byId('gallery-retry').onclick=()=>libraryLoaded?selectExperiment():loadLibrary();

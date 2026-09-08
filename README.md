@@ -48,6 +48,8 @@ Use `angle run` instead of `angle public-ct` for synthetic experiments. Omitting
 
 ## Rebuild the GitHub demo
 
+Install Node 22.23.2 or newer alongside the Python environment. The builder uses the browser solver to generate the introductory comparison from measured projections.
+
 ```sh
 uv run --locked --no-editable python scripts/build_demo.py
 uv run --locked --no-editable python scripts/verify_demo.py
@@ -65,11 +67,13 @@ uv run --locked --no-editable ruff check src tests scripts app
 uv run --locked --no-editable pytest
 ```
 
-The local installed package passed **88 Python tests and 20 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
+The local installed package passed **88 Python tests and 21 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
 
 The scientific GitHub workflow runs Apple Silicon and Intel Mac checks and replays a shared experiment on both architectures. The Pages workflow tests and builds the demo on Linux before deployment. Workflow badges/status on GitHub show the current remote result; [validation records](docs/VALIDATION.md) distinguish local observations from remote execution. Cross-platform comparisons use stated tolerances, not a promise of universal bitwise identity.
 
-The [browser regression workflow](qa/README.md) exercises checkpoint restoration, alternative refinements, labels and exported-run replay on measured, body-simulation and analytic examples.
+The [browser regression workflow](qa/README.md) exercises checkpoint restoration, alternative refinements, labels and exported-run replay on measured, body-simulation and analytic examples. Pages deployment also requires complete-demo checks in Chromium and WebKit, including keyboard access, automated accessibility, narrow reflow, shared links, quick comparisons and the recorded gallery.
+
+The introduction includes two actual 90-view reconstructions. Quick comparisons calculate spread and consecutive selections, and acquisition links share sample and control settings without including private inputs or labels. Recorded experiments load only when opened. [Sharing image, attribution and post drafts](docs/launch/README.md).
 
 ## Real measured scanner data
 

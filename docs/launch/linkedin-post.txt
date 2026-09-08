@@ -1,0 +1,16 @@
+How much of a CT image is supported by the measurements available?
+
+I built Missing-Angle CT to make that question visible. The browser demo calculates a cross-section from projection readings and lets you inspect the image as each view is incorporated.
+
+The comparison shown uses the same physical object and the same number of measured views. Spreading those views across the scan produces a very different result from collecting them within a narrow angular range.
+
+You can choose acquired Helsinki object measurements or simulated projections of real chest and abdominal CT images, change angular coverage, compare refinement settings, mark regions and measure errors. Named checkpoints let you return to an earlier result, and exported experiments can be recalculated from their measurements.
+
+One useful finding: better agreement with the measured rays does not always mean closer agreement with a reference image. The demo shows both, including cases where refinement makes reference error worse.
+
+This is a reconstruction and evaluation tool, not a diagnostic system. The body examples use simulated projections; the Helsinki examples use acquired measurements.
+
+Try it: https://zakimaths.github.io/missing-angle-ct/
+Code and methods: https://github.com/zakimaths/missing-angle-ct
+
+Comparison image derived from HTC2022, Meaney and colleagues, CC BY 4.0.

@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22.23.2'
+          cache: npm
+          cache-dependency-path: qa/package-lock.json
       - uses: actions/setup-python@v6
         with:
           python-version-file: .python-version
@@ -24,6 +29,10 @@ jobs:
       - run: node scripts/benchmark_live.cjs --check
       - run: uv run --locked --no-editable python scripts/build_demo.py
       - run: uv run --locked --no-editable python scripts/verify_demo.py
+      - run: npm ci --prefix qa --ignore-scripts
+      - run: qa/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: npm run test:demo --prefix qa
+      - run: CT_BROWSER=webkit npm run test:demo --prefix qa
       - uses: actions/upload-pages-artifact@v3
         with:
           path: demo

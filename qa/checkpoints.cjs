@@ -11,7 +11,7 @@ const root = path.resolve(__dirname, '..');
 const web = path.join(root, 'src/missing_angle/web');
 async function main() {
   const panel = await fs.readFile(path.join(web, 'live-panel.html'), 'utf8');
-  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Reconstruction checks</title><link rel="stylesheet" href="/live.css"></head><body><main>${panel}</main><script src="/projection-core.js"></script><script src="/study.js"></script><script src="/live.js"></script></body></html>`;
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Reconstruction checks</title><link rel="stylesheet" href="/live.css"></head><body><main>${panel}</main><script src="/configuration.js"></script><script src="/projection-core.js"></script><script src="/study.js"></script><script src="/live.js"></script></body></html>`;
   const server = http.createServer(async (req, res) => {
     try {
       const pathname = new URL(req.url, 'http://localhost').pathname;
