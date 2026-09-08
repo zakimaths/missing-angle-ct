@@ -4,13 +4,13 @@
   const VERSION = 'ray-sart-1';
   function finite(x) { return typeof x === 'number' && Number.isFinite(x); }
   function validate(input) {
-    if (!input || input.schema !== 'ct-projections/1') throw Error('Choose a ct-projections/1 JSON file containing angles, a sinogram and geometry.');
+    if (!input || input.schema !== 'ct-projections/1') throw Error('Choose a compatible projection file containing detector readings, acquisition angles and scanner geometry.');
     const {angles_deg: angles, sinogram: sino, geometry: g} = input;
-    if (!Array.isArray(angles) || angles.length < 4 || angles.length > 1440 || !angles.every(a => finite(a) && Math.abs(a) <= 3600)) throw Error('Provide 4–1440 finite angles in degrees.');
+    if (!Array.isArray(angles) || angles.length < 4 || angles.length > 1440 || !angles.every(a => finite(a) && Math.abs(a) <= 3600)) throw Error('Provide 4 to 1440 finite angles in degrees.');
     if (!Array.isArray(sino) || sino.length !== angles.length || !Array.isArray(sino[0])) throw Error('One sinogram row is required for every angle.');
     const detectors = sino[0].length;
-    if (detectors < 16 || detectors > 512 || !sino.every(row => Array.isArray(row) && row.length === detectors && row.every(v => finite(v) && Math.abs(v) <= 100))) throw Error('Each view needs the same 16–512 detector readings, with finite line-integral values between −100 and 100.');
-    if (!g || !['fan', 'parallel'].includes(g.type) || !finite(g.fov_mm) || g.fov_mm < 1 || g.fov_mm > 1000 || !finite(g.detector_spacing_mm) || g.detector_spacing_mm < .01 || g.detector_spacing_mm > 20) throw Error('Provide fan or parallel geometry, field of view (1–1000 mm) and detector spacing (0.01–20 mm).');
+    if (detectors < 16 || detectors > 512 || !sino.every(row => Array.isArray(row) && row.length === detectors && row.every(v => finite(v) && Math.abs(v) <= 100))) throw Error('Each view needs the same 16 to 512 detector readings, with finite line-integral values between −100 and 100.');
+    if (!g || !['fan', 'parallel'].includes(g.type) || !finite(g.fov_mm) || g.fov_mm < 1 || g.fov_mm > 1000 || !finite(g.detector_spacing_mm) || g.detector_spacing_mm < .01 || g.detector_spacing_mm > 20) throw Error('Provide fan or parallel geometry, field of view (1 to 1000 mm) and detector spacing (0.01 to 20 mm).');
     if (g.type === 'fan' && (!finite(g.source_distance_mm) || !finite(g.detector_distance_mm) || g.source_distance_mm <= g.fov_mm || g.detector_distance_mm <= g.fov_mm || g.source_distance_mm > 10000 || g.detector_distance_mm > 10000)) throw Error('Fan geometry needs source-to-origin and origin-to-detector distances larger than the field of view and at most 10000 mm.');
     if (typeof input.name !== 'string' || input.name.length > 160) throw Error('Provide a short dataset name (up to 160 characters).');
     return input;
@@ -18,7 +18,7 @@
   function settings(options, count) {
     const o = {...options};
     if (![64, 96, 128].includes(o.size) || !Number.isInteger(o.views) || o.views < 4 || o.views > count || !['spread', 'sector'].includes(o.selection)) throw Error('Invalid image size, view count or angle selection.');
-    if (!Number.isInteger(o.passes) || o.passes < 1 || o.passes > 6 || !finite(o.smoothing) || o.smoothing < 0 || o.smoothing > .15) throw Error('Choose 1–6 refinement passes and smoothing between 0 and 0.15.');
+    if (!Number.isInteger(o.passes) || o.passes < 1 || o.passes > 6 || !finite(o.smoothing) || o.smoothing < 0 || o.smoothing > .15) throw Error('Choose 1 to 6 refinement passes and smoothing between 0 and 0.15.');
     return o;
   }
   function selectViews(count, wanted, selection) {

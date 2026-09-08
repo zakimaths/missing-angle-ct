@@ -22,7 +22,7 @@ function showComparison() {
   }
   byId('comparison-explanation').textContent = errors
     ? 'Difference maps: black means a match; purple, orange and yellow show increasing absolute pixel error. Yellow means 0.03 or more. Every method uses this same scale. The prepared reference stays grayscale; coloured maps show error, not anatomy.'
-    : 'Reconstructed images use the same 0–0.6 relative-attenuation scale. With complete angle coverage they should look similar. Switch to difference maps or centre zoom to inspect small errors.';
+    : 'Reconstructed images use the same 0 to 0.6 relative-attenuation scale. With complete angle coverage they should look similar. Switch to difference maps or centre zoom to inspect small errors.';
 }
 async function selectExperiment() {
   stop(); const request = ++selection;
@@ -45,7 +45,7 @@ async function selectExperiment() {
     showComparison();
     for (const method of ['fbp', 'sart', 'regularized']) byId(`${method}-score`).textContent = `Image difference (RMSE): ${current.metrics[method].rmse.toFixed(5)}`;
     byId('download').href = `${current.folder}/experiment.zip`;
-    byId('experiment-id').textContent = `Saved run ${current.id}`;
+    byId('experiment-id').textContent = 'Includes measurements, settings and results.';
     byId('step').max = current.frames.length - 1;
     showStep(0); stop();
     byId('status').textContent = ''; byId('result').hidden = false;

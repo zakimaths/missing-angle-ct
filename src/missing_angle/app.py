@@ -31,7 +31,7 @@ def social_links(location):
         icon = base64.b64encode(svg.encode()).decode()
         links += (
             f'<a href="{url}" target="_blank" rel="noopener noreferrer" '
-            f'aria-label="{name} profile (opens in a new tab)" title="{name} profile — opens in a new tab">'
+            f'aria-label="{name} profile (opens in a new tab)" title="{name} profile (opens in a new tab)">'
             f'<img src="data:image/svg+xml;base64,{icon}" width="20" height="20" alt="" '
             'aria-hidden="true"/></a>'
         )
@@ -106,7 +106,7 @@ def metrics_table(exp):
         recovery = m["contrast_recovery"]
         rows.append({"Method": title, "Image difference (RMSE) ↓": f"{m['rmse']:.4f}",
                      "Feature brightness difference": f"{m['roi_contrast']:+.4f}",
-                     "Fraction of original contrast": f"{recovery:.1%}" if recovery is not None else "— absent control"})
+                     "Fraction of original contrast": f"{recovery:.1%}" if recovery is not None else "Not applicable (absent control)"})
     st.table(rows)
     st.caption(f"We measure brightness inside the outlined feature and compare it with the surrounding area. Reference contrast: {exp.metrics['reference_roi_contrast']:+.4f}. "
                "The target mean uses its saved area weights; background is a surrounding annulus. "
@@ -115,7 +115,7 @@ def metrics_table(exp):
 
 def export_control(exp, key):
     identifier = experiment_id(exp)
-    st.download_button("Download experiment (.zip)", data=export_bundle(exp),
+    st.download_button("Download experiment", data=export_bundle(exp),
                        file_name=f"missing-angle-{identifier}.zip", mime="application/zip", key=key)
     st.caption(f"Experiment {identifier} · includes images, X-ray measurements, settings and software versions.")
 
@@ -287,7 +287,7 @@ def public_ct():
              "**Correction + smoothing** adds gentle total-variation (TV) smoothing between corrections. "
              "Smoothing can reduce streaks and grain, but it can also remove small details.")
     st.caption(f"Basic SART: {c.sart_passes} passes. Correction + smoothing: {exp.geometry.get('refinement', {}).get('passes', 0)} passes. "
-               "Reconstructed images use a fixed 0–0.6 scale; error maps use 0–0.03. With many views, the reconstructions should look similar. Use difference maps or centre zoom to inspect small errors.")
+               "Reconstructed images use a fixed 0 to 0.6 scale; error maps use 0 to 0.03. With many views, the reconstructions should look similar. Use difference maps or centre zoom to inspect small errors.")
     st.table([{"Method": label, "Difference from reference ↓": f"{exp.metrics['methods'][method]['rmse']:.5f}",
                "Mismatch with measurements ↓": f"{exp.metrics['methods'][method]['raster_residual_rmse']:.5f}"}
               for method, label in items])
@@ -402,8 +402,8 @@ def live_reconstruction():
     from missing_angle.live import import_htc_mat, live_html
     custom = None
     with st.expander("Open an original HTC2022 MATLAB projection file"):
-        st.caption("Optional: open a CtDataFull or CtDataLimited .mat file. Projection JSON can be opened directly in the lab below.")
-        uploaded = st.file_uploader("HTC projection file (.mat)", type=["mat"], max_upload_size=16, key="measured_mat")
+        st.caption("Import an original Helsinki projection dataset here, or open a compatible projection file in the lab below.")
+        uploaded = st.file_uploader("Helsinki projection dataset", type=["mat"], max_upload_size=16, key="measured_mat")
         if uploaded is not None:
             try:
                 custom = import_htc_mat(uploaded.getvalue())
@@ -451,9 +451,9 @@ def main():
         st.session_state.setdefault(f"c_{name}", value)
     st.html('<header class="ma-heading"><h1 id="missing-angle-ct-detective">'
             'Missing-Angle CT Detective</h1>' + social_links("header") + '</header>')
-    st.markdown("**How does a CT scanner build an image—and what happens when some views are missing?**")
-    st.write("This lab is for students learning CT reconstruction. Start with acquired X-ray measurements, choose which views "
-             "to use, and calculate a new image. Inspect the views as they are incorporated, then refine the result with further corrections.")
+    st.markdown("**CT reconstruction from measured projections**")
+    st.write("Examine how angular coverage, measurement count and refinement affect CT reconstruction. Select acquired views "
+             "and calculate a cross-section. Inspect intermediate results, compare against references, and export reproducible runs.")
     if "pending_mode" in st.session_state:
         st.session_state.mode = st.session_state.pop("pending_mode")
     st.session_state.setdefault("mode", "Measured")

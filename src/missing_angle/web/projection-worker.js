@@ -1,5 +1,5 @@
 'use strict';
-if (typeof CT === 'undefined') importScripts('projection-core.js?v=6');
+if (typeof CT === 'undefined') importScripts('projection-core.js?v=9');
 let input,options,image,baseline,baselineEvaluation,selected,order,cache,paused=false,resumeWait=null,delay=12,running=false;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function gate(early=false){if(paused)await new Promise(resolve=>resumeWait=resolve);await sleep(delay && early ? 140 : delay);}

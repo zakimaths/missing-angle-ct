@@ -15,7 +15,7 @@ function syntheticReference(size=96){
  return {schema:'ct-reference/1',name:'Known analytic disks · 8 × 8 area sampling',kind:'analytic',size,fov_mm:70,units:'1/mm',orientation:'row-major-top-left',image};
 }
 function validateReference(ref,input){
- if(!ref||ref.schema!=='ct-reference/1'||!Number.isInteger(ref.size)||ref.size<16||ref.size>512||!Array.isArray(ref.image)||ref.image.length!==ref.size**2||!ref.image.every(v=>Number.isFinite(v)&&Math.abs(v)<=100)||typeof ref.name!=='string'||ref.name.length>160||ref.units!=='1/mm'||ref.orientation!=='row-major-top-left'||!Number.isFinite(ref.fov_mm)||Math.abs(ref.fov_mm-input.geometry.fov_mm)>1e-6)throw Error('Reference needs a 16–512 square image, matching field of view in mm, units 1/mm and row-major-top-left orientation.');
+ if(!ref||ref.schema!=='ct-reference/1'||!Number.isInteger(ref.size)||ref.size<16||ref.size>512||!Array.isArray(ref.image)||ref.image.length!==ref.size**2||!ref.image.every(v=>Number.isFinite(v)&&Math.abs(v)<=100)||typeof ref.name!=='string'||ref.name.length>160||ref.units!=='1/mm'||ref.orientation!=='row-major-top-left'||!Number.isFinite(ref.fov_mm)||Math.abs(ref.fov_mm-input.geometry.fov_mm)>1e-6)throw Error('The reference must be a square image with 16 to 512 pixels per side, the same physical field of view as the scan, attenuation values per millimetre, and pixels ordered from the top-left corner.');
  return ref;
 }
 function resample(image,size){
