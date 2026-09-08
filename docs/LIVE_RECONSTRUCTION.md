@@ -2,16 +2,16 @@
 
 Version 0.4 adds a real calculator to [GitHub Pages](https://zakimaths.github.io/missing-angle-ct/). It runs a deterministic JavaScript worker on the user's device, also embedded offline in the Mac app. Clicking **Reconstruct from views** starts from zero and calculates an image using only the selected projection readings and geometry. No existing reconstruction, target image, learned model or remote AI service is passed to this solver.
 
-## Student workflow
+## Workflow
 
-1. Choose one of three measured HTC2022 objects, or open a projection JSON file.
+1. Choose one of three measured HTC2022 objects, four real body CT examples with simulated views, or open a projection JSON file.
 2. Inspect every available angle through the sinogram, view slider, detector profile and paginated view gallery.
 3. Choose 4–721 views for the bundled data, either distributed through the acquisition or the first angles. Choose a 64, 96 or 128 pixel square grid.
 4. Reconstruct. Pause, continue, or advance one view. Every incorporated view produces a real saved first-pass snapshot. The initial 12 views play more slowly to expose image formation. Uncheck view-by-view animation to calculate faster and show only the completed image. This is the default with reduced-motion preferences; all numerical steps remain available for manual inspection.
 5. Refine with 1–6 extra correction passes and optional light neighbour smoothing. Inspect the initial image and the change introduced by refinement. Smoothing may soften edges; it is not guaranteed to improve anatomy.
 6. Download the measurements or a complete run. Open the saved run and reconstruct again to compare numerical results. Further refinement stages are replayed in order.
 
-The old chest-image experiments remain separately labelled: their new projections are simulated and their public playback is recorded. They do not supply images to the live calculator.
+The live body CT samples have 360 simulated views each; see [sources, preparation and checks](BODY_CT.md). The older recorded chest-image experiments remain separately labelled: their new projections are simulated and their public playback is recorded. Source references are kept separate from the live reconstruction worker.
 
 ## Acquired data and preparation
 

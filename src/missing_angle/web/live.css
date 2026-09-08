@@ -5,3 +5,5 @@
 @media(max-width:600px){.live-plots,.live-label-layout{grid-template-columns:1fr}.live-table th,.live-table td{padding:10px 8px}.live-label-row{align-items:start}}
 
 .method-guide{max-width:850px;margin:24px 0}.method-guide ol{padding-left:1.4em}.method-guide li{margin:12px 0;line-height:1.55}.method-guide strong{font-weight:650}
+
+.live-body-preview:not([hidden]){display:grid;grid-template-columns:minmax(180px,280px) 1fr;gap:28px;align-items:start;margin:24px 0;padding:24px;background:#f0f5f5}.live-body-preview figure{margin:0}.live-body-preview figcaption{font-size:.8rem;margin-top:10px;color:var(--muted)}#live-source-image{aspect-ratio:1;background:#000}@media(max-width:600px){.live-body-preview:not([hidden]){grid-template-columns:1fr;padding:16px}.live-body-preview figure{max-width:280px}}

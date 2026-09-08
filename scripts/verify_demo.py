@@ -39,5 +39,14 @@ for filename in ('live.js', 'live.css', 'study.js', 'projection-core.js', 'proje
 assert (Path('src/missing_angle/web/live-panel.html').read_text()) in (root / 'index.html').read_text()
 print('Live calculator code matches packaged source; three acquired 721-view inputs contain no reconstruction image.')
 
-for key in ("ta", "tb", "tc"):
+for key in ("ta", "tb", "tc", "chest-64", "chest-96", "abdomen-400", "abdomen-480"):
     assert (root / "reference-data" / f"{key}.json").read_bytes() == (Path("src/missing_angle/web/reference-data") / f"{key}.json").read_bytes()
+
+for key in ("chest-64", "chest-96", "abdomen-400", "abdomen-480"):
+    path = Path("projection-data") / f"{key}.json"
+    assert (root / path).read_bytes() == (Path("src/missing_angle/web") / path).read_bytes()
+    data = json.loads((root / path).read_text())
+    assert data["kind"] == "body_ct_simulated"
+    assert np.asarray(data["sinogram"]).shape == (360, 192)
+    assert not {"image", "reference", "preview"} & set(data)
+print("Four real body CT simulations and their separate references match packaged sources.")

@@ -17,4 +17,4 @@ before, rest = index.split(a, 1)
 _, after = rest.split(b, 1)
 index = before + a + '\n' + (WEB / 'live-panel.html').read_text() + '\n' + b + after
 (DEMO / 'index.html').write_text(index)
-print('Live reconstruction code and three measured datasets published to demo/.')
+print('Live reconstruction code and three measured object datasets and four real-body simulations published to demo/.')

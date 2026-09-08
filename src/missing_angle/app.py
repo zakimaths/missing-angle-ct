@@ -451,8 +451,8 @@ def main():
         st.session_state.setdefault(f"c_{name}", value)
     st.html('<header class="ma-heading"><h1 id="missing-angle-ct-detective">'
             'Missing-Angle CT Detective</h1>' + social_links("header") + '</header>')
-    st.markdown("**CT reconstruction from measured projections**")
-    st.write("Examine how angular coverage, measurement count and refinement affect CT reconstruction. Select acquired views "
+    st.markdown("**CT reconstruction from projection data**")
+    st.write("Examine how angular coverage, measurement count and refinement affect CT reconstruction. Select acquired object measurements or simulated views of real body scans "
              "and calculate a cross-section. Inspect intermediate results, compare against references, and export reproducible runs.")
     if "pending_mode" in st.session_state:
         st.session_state.mode = st.session_state.pop("pending_mode")
@@ -463,7 +463,7 @@ def main():
     st.divider()
     {"Measured": live_reconstruction, "Explore": explore, "Public CT": public_ct, "Detective": detective, "Atlas": atlas}[mode]()
     st.divider()
-    st.caption("The live lab reconstructs measured projections. Separate CT-image experiments simulate measurements. This is a teaching lab, not a diagnostic tool.")
+    st.caption("The live lab includes acquired Helsinki measurements and simulated views of real chest and abdominal CT scans. For reconstruction experiments, not diagnosis.")
     st.html(social_links("footer"))
 
 

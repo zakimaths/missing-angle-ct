@@ -42,9 +42,9 @@ def import_htc_mat(raw):
 
 def live_html(custom=None):
     inputs = {key: json.loads((WEB / 'projection-data' / f'{key}.json').read_text())
-              for key in ('ta', 'tb', 'tc')}
+              for key in ('ta', 'tb', 'tc', 'chest-64', 'chest-96', 'abdomen-400', 'abdomen-480')}
     references = {key: json.loads((WEB / 'reference-data' / f'{key}.json').read_text())
-                  for key in ('ta', 'tb', 'tc')}
+                  for key in ('ta', 'tb', 'tc', 'chest-64', 'chest-96', 'abdomen-400', 'abdomen-480')}
     panel = (WEB / 'live-panel.html').read_text()
     if custom is not None:
         inputs['custom'] = custom

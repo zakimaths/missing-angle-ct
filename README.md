@@ -1,10 +1,10 @@
 # Missing-Angle CT Detective
 
-**Reconstruct a new image from hundreds of measured X-ray views, directly on your device.** Inspect the angles, choose a view budget, watch the calculation and refine the image. A student lab for learning what measurements can support—and what missing views can hide.
+**Reconstruct a new image from hundreds of measured X-ray views, directly on your device.** Inspect the angles, choose a view budget, watch the calculation and refine the image. A reconstruction lab for examining how measurement coverage affects image detail.
 
 [**Try the interactive demo**](https://zakimaths.github.io/missing-angle-ct/) · [Methods and measured improvements](docs/RECONSTRUCTION.md) · [Data source and licence](docs/PUBLIC_CT.md)
 
-The public site now includes a **live reconstruction calculator with three acquired datasets, each containing 721 views**. It computes on your device from projection readings and scanner geometry; no existing reconstruction is used as an answer. Open your own projection JSON or an exported run. The Mac app also imports original HTC2022 MATLAB projection files. The separate gallery retains 32 recorded experiments on real chest images with simulated projections. [Live workflow, input format, data attribution and methods](docs/LIVE_RECONSTRUCTION.md). This is educational software, not a diagnostic tool or dose estimator.
+The public site now includes a **live reconstruction calculator with three acquired object datasets with 721 views each, plus four real body CT samples with 360 simulated views each**. It computes on your device from projection readings and scanner geometry; no existing reconstruction is used as an answer. Open your own projection JSON or an exported run. The Mac app also imports original HTC2022 MATLAB projection files. [Body CT sources and reproducible preparation](docs/BODY_CT.md). Chest and abdominal samples include source previews, live reconstruction, enhancement, statistics and labels. The separate gallery retains 32 recorded experiments on real chest images with simulated projections. [Live workflow, input format, data attribution and methods](docs/LIVE_RECONSTRUCTION.md). This is educational software, not a diagnostic tool or dose estimator.
 
 ## Run on your Mac
 
@@ -21,7 +21,7 @@ Or double-click **Launch Missing Angle.command** after installing uv. Setup down
 
 Use uv 0.12.10 or newer for a fresh Python download. The Mac workflow pins uv 0.12.10 and installs Python directly, because setup-python does not distribute this security release for macOS. Python 3.12.14 is selected in `.python-version`; `uv.lock` records exact dependencies. `--no-editable` avoids a `.pth` import issue observed on this Mac. After changing source code, rerun the launch command and restart the server.
 
-## What students can do
+## Available functions
 
 - **Reconstruct from views** opens first: inspect 721 measured angles, choose a subset, calculate from zero, pause or step one view, and refine with further corrections. Download and replay the run.
 - **CT image experiments** remain available. Choose a chest slice, viewing angles, coverage and noise; press **Reconstruct this slice**. Display windows help you see lung, soft tissue or bone.
@@ -62,7 +62,7 @@ uv run --locked --no-editable ruff check src tests scripts app
 uv run --locked --no-editable pytest
 ```
 
-The local installed package passed **70 Python tests and 13 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
+The local installed package passed **72 Python tests and 17 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
 
 The scientific GitHub workflow runs Apple Silicon and Intel Mac checks and replays a shared experiment on both architectures. The Pages workflow tests and builds the demo on Linux before deployment. Workflow badges/status on GitHub show the current remote result; [validation records](docs/VALIDATION.md) distinguish local observations from remote execution. Cross-platform comparisons use stated tolerances, not a promise of universal bitwise identity.
 
