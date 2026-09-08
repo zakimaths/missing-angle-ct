@@ -100,3 +100,7 @@ Use `ct-reference/1` JSON with `name`, integer `size` (16–512), a flat row-maj
 ### Save labels and reproduce comparisons
 
 Name the reconstruction and add up to 30 rectangular regions using percentages from the top-left corner. The image click sets the rectangle position; all coordinates also have keyboard-accessible numeric inputs. Labels are user observations, not AI classifications. The reconstruction export keeps the name, normalised region coordinates, reference, enhancement recipes and numerical results. Reopening it recalculates the image from the measurements and restores the labels. CSV and report JSON exports do not replace the replayable reconstruction file.
+
+## Interface and import safeguards
+
+The live lab provides section navigation, a text table for each selected detector profile and descriptive playback sliders. Every first-pass view remains available; later refinement retains one image per completed pass to bound memory. Importing original MATLAB files checks decompressed size, array dimensions, numeric payload sizes and structure depth before parsing with SciPy. See the [quality review](reviews/2026-09-08-quality.md).

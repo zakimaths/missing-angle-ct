@@ -1,8 +1,9 @@
 <section id="live-lab" class="live-lab" aria-labelledby="live-title">
   <div class="live-heading"><div><p class="eyebrow">CALCULATE FROM MEASUREMENTS</p><h2 id="live-title">Build an image from 721 X-ray views</h2></div><span class="live-badge">Runs on your device</span></div>
   <p class="live-lead">Reconstruct cross-sections from projection data and examine how angular coverage affects the result. Choose acquired measurements of Helsinki test objects or calculated views of real chest and abdominal CT scans. Each reconstruction starts from an empty image; the analytic test provides known shapes for checking accuracy.</p>
-  <div class="method-guide" aria-labelledby="live-workflow-title">
-    <h3 id="live-workflow-title">Purpose and workflow</h3>
+  <nav class="live-section-nav" aria-label="Lab sections"><a href="#live-inputs">Reconstruct</a><a href="#live-analysis-title">Accuracy</a><a href="#live-label-title">Labels and export</a></nav>
+  <details class="method-guide" aria-labelledby="live-workflow-title">
+    <summary id="live-workflow-title">Purpose, workflow and terminology</summary>
     <p>This lab examines how measurement coverage and reconstruction choices affect a CT cross-section. It supports direct calculation from projection data, comparison with reference images, and reproducible assessment of errors and structural detail.</p>
     <ol>
       <li><strong>Reconstruct.</strong> Select a dataset or import projections, choose the number and distribution of views, and run the calculation. Playback and single-view stepping expose the intermediate results.</li>
@@ -14,29 +15,29 @@
       <p><strong>Reference:</strong> an image used to assess the reconstruction. The real-object references were reconstructed by the dataset authors from full scans. They provide an independent method comparison, with their own measurement and reconstruction errors. Body CT examples instead compare against the source image used to simulate projections; this tests reconstruction under the stated simulation assumptions.</p>
       <p><strong>Attenuation:</strong> the reduction in X-ray intensity through material. Brighter pixels here represent higher estimated attenuation coefficients. <strong>Artifact:</strong> a streak, blur or false structure introduced by the acquisition or reconstruction process.</p>
     </details>
-  </div>
-  <div class="live-inputs">
+  </details>
+  <div class="live-inputs" id="live-inputs" tabindex="-1">
     <label>Test reconstruction<select id="live-source"><optgroup label="Helsinki objects · acquired projections"><option value="ta">Helsinki object A · 721 measured views</option><option value="tb">Helsinki object B · 721 measured views</option><option value="tc">Helsinki object C · 721 measured views</option></optgroup><optgroup label="Human body CT · simulated projections"><option value="chest-64">Chest CT · slice 64 · 360 views</option><option value="chest-96">Chest CT · slice 96 · 360 views</option><option value="abdomen-400">Abdominal CT · slice 400 · 360 views</option><option value="abdomen-480">Abdominal CT · slice 480 · 360 views</option></optgroup><optgroup label="Analytic test"><option value="synthetic">Analytic disks · 360 synthetic views · known truth</option></optgroup></select></label>
-    <label class="file-label">Or open your measurements<input type="file" id="live-file" accept=".json,application/json"><small>Projection data or a previously exported run · up to 16 MB</small></label>
+    <label class="file-label">Or open your measurements<input type="file" aria-describedby="live-error" id="live-file" accept=".json,application/json"><small>Projection data or a previously exported run · up to 16 MB</small></label>
   </div>
   <p id="live-source-info" class="muted"></p>
   <div id="live-body-preview" class="live-body-preview" hidden><figure><canvas id="live-source-image" width="256" height="256" role="img" aria-label="Real source CT slice, displayed in Hounsfield units"></canvas><figcaption id="live-source-window"></figcaption></figure><div><h3>Source body scan</h3><p id="live-body-description"></p><p>The scanner’s original projections are not included in these public images. The 360 views here are simulated from the CT slice. Reconstruction still calculates a new image from those views; the source is used separately for comparison.</p><p class="muted">Two chest slices come from one public volume and two abdominal slices from another. These examples test anatomical detail under a simplified acquisition model; they do not represent four independent patients.</p></div></div>
-  <p id="live-error" role="alert" hidden></p>
+  <p id="live-error" role="alert" tabindex="-1" hidden></p>
   <div class="live-controls">
-    <label>Views to use<input id="live-count" type="number" min="4" max="721" step="1" value="360"></label>
+    <label>Views to use<input aria-describedby="live-source-info live-error" id="live-count" type="number" min="4" max="721" step="1" value="360"></label>
     <label>Choose angles<select id="live-selection"><option value="spread">Spread across the scan</option><option value="sector">Use the first angles only</option></select></label>
     <label>Image size<select id="live-size"><option value="64">64 × 64 · quick</option><option value="96" selected>96 × 96 · balanced</option><option value="128">128 × 128 · more detail</option></select></label>
     <label class="check-label"><input id="live-slow" type="checkbox" checked> Watch the image build, view by view</label>
   </div>
   <p class="muted"><strong>Acquisition and image settings:</strong> View count sets the measurement budget. Angular selection determines its distribution across the scan; a restricted range can leave structures poorly constrained. Image size sets the reconstruction grid. Increasing the number of pixels raises computational cost without necessarily improving recoverable detail.</p>
   <div class="live-actions"><button id="live-start" class="primary" disabled>Reconstruct from views</button><button id="live-pause" disabled>Pause</button><button id="live-one" disabled>One view</button><button id="live-stop" disabled>Stop calculation</button><button id="live-all" disabled>Use all 721 views</button></div>
-  <p id="live-status" role="status" aria-live="polite">Loading projections…</p><progress id="live-progress" max="1" value="0" aria-label="Projection views processed"></progress>
+  <p id="live-status" tabindex="-1" role="status" aria-live="polite">Loading projections…</p><progress id="live-progress" max="1" value="0" aria-label="Projection views processed"></progress>
   <div class="live-workspace">
     <div class="live-measurements"><h3>Inspect the available views</h3><p id="live-measurement-caption" class="muted">Each column is one acquired angle. Brightness shows the measured attenuation along the detector.</p><canvas id="live-sinogram" width="721" height="140" role="img" aria-label="Sinogram: all acquired angles and detector readings"></canvas>
       <p class="muted">The <strong>sinogram</strong> arranges detector readings by acquisition angle. Selecting a column updates the angular diagram and detector profile, linking each set of measurements to its direction through the object.</p>
       <label for="live-view">Inspect view <output id="live-view-label">1 of 721</output></label><input id="live-view" type="range" min="0" max="720" value="0">
       <div class="live-view-details"><div class="live-orbit-wrap"><canvas id="live-orbit" width="520" height="520" role="img" aria-label="Available, selected and processed projection angles"></canvas><div class="live-orbit-counter"><strong id="live-orbit-count">0 / 360</strong><span>views used</span></div></div><div><h4 id="live-angle-label">Angle 0°</h4><canvas id="live-profile" width="360" height="180" role="img" aria-label="Detector readings for the selected view"></canvas><p class="muted">One 2D CT view is a row of detector readings, not a finished cross-section.</p></div></div>
-      <p id="live-angle-summary" class="muted"></p><label class="check-label"><input id="live-follow" type="checkbox" checked> Follow the view being calculated</label>
+      <p id="live-angle-summary" class="muted"></p><details id="live-readings-details"><summary>Read the selected view as a table</summary><div id="live-readings-table" class="live-table live-reading-table" tabindex="0" role="region" aria-label="Detector readings for the selected view"></div></details><label class="check-label"><input id="live-follow" type="checkbox" checked> Follow the view being calculated</label>
     </div>
     <div class="live-result"><h3>Calculated reconstruction</h3><canvas id="live-image" width="96" height="96" role="img" aria-label="Reconstruction: starts empty until you run the calculation"></canvas><p id="live-frame-label">No reconstruction yet. Press Reconstruct from views.</p>
       <label for="live-history">Inspect calculated steps <output id="live-history-label">0 saved</output></label><input id="live-history" type="range" min="0" max="0" value="0" disabled><button id="live-replay" disabled>Play calculated steps</button>
@@ -51,7 +52,7 @@
   </section>
 
   <section class="live-analysis" aria-labelledby="live-analysis-title">
-    <h3 id="live-analysis-title">Reconstruction accuracy</h3>
+    <h3 id="live-analysis-title" tabindex="-1">Reconstruction accuracy</h3>
     <p>Check the first pass against your current image. Lower RMSE and MAE mean smaller errors; bias tells you whether values are too high or too low. Correlation describes a relationship, not accuracy.</p>
     <details><summary>Interpreting the error metrics</summary>
       <p><strong>RMSE (root mean square error)</strong> summarises differences while weighting larger errors more strongly. <strong>MAE (mean absolute error)</strong> is the average absolute difference. Zero means an exact match for the values being compared.</p>
@@ -59,7 +60,7 @@
       <p><strong>Pearson r</strong> measures linear association. A correlation of 1 can coexist with systematic scaling or offset errors. Interpret it alongside RMSE, the fitted line and spatial differences.</p>
       <p><strong>Selected rays</strong> contribute to reconstruction updates. <strong>Unused rays</strong> assess agreement with measurements excluded from those updates. Image errors and ray errors compare different quantities; compare the first-pass and current values within the same row.</p>
     </details>
-    <p id="live-reference-info" class="muted">Loading the comparison reference…</p>
+    <p id="live-reference-info" class="muted" role="status">Loading the comparison reference…</p>
     <label>Optional aligned reference<input id="live-reference-file" type="file" accept=".json,application/json"><small>Match the scan’s field of view, orientation and attenuation units · up to 8 MB</small></label>
     <div id="live-evaluation" hidden>
       <div id="live-score-table" class="live-table" tabindex="0" role="region" aria-label="Reconstruction error comparison"></div><p id="live-verdict" role="status"></p>
@@ -74,9 +75,9 @@
       <div class="live-actions"><button id="live-download-pairs">Download paired readings</button><button id="live-download-report">Download error report</button></div>
     </div>
   </section>
-  <section class="live-analysis" aria-labelledby="live-label-title"><h3 id="live-label-title">Name this run and mark regions</h3><label>Reconstruction name<input id="live-run-name" type="text" maxlength="120" placeholder="e.g. Object A · 90 views · light smoothing"></label>
+  <section class="live-analysis" aria-labelledby="live-label-title"><h3 id="live-label-title" tabindex="-1">Name this run and mark regions</h3><label>Reconstruction name<input id="live-run-name" type="text" maxlength="120" placeholder="e.g. Object A · 90 views · light smoothing"></label>
     <div id="live-label-tools" hidden><p>Mark a hole, an edge, or a streak you want to compare. Labels are your observations. Each region reports its mean value and, when available, its reference error.</p>
-      <div class="live-label-layout"><canvas id="live-label-image" role="img" aria-label="Current reconstruction with numbered rectangular regions"></canvas><div><label>Region name<input id="live-region-name" type="text" maxlength="80" placeholder="e.g. Small upper hole"></label><p class="muted">Set the rectangle as percentages from the top-left corner. You can also click the image to set its position.</p><div class="live-roi-inputs"><label>Left (%)<input id="live-roi-x" type="number" min="0" max="99" value="40"></label><label>Top (%)<input id="live-roi-y" type="number" min="0" max="99" value="40"></label><label>Width (%)<input id="live-roi-w" type="number" min="1" max="100" value="20"></label><label>Height (%)<input id="live-roi-h" type="number" min="1" max="100" value="20"></label></div><button id="live-add-label">Add region</button><p id="live-label-message" role="status"></p></div></div><div id="live-labels-list"></div>
+      <div class="live-label-layout"><canvas id="live-label-image" role="img" aria-label="Current reconstruction with numbered rectangular regions"></canvas><div><label>Region name<input id="live-region-name" type="text" maxlength="80" required aria-describedby="live-label-message" placeholder="e.g. Small upper hole"></label><p class="muted">Set the rectangle as percentages from the top-left corner. You can also click the image to set its position.</p><div class="live-roi-inputs"><label>Left (%)<input id="live-roi-x" type="number" min="0" max="99" value="40"></label><label>Top (%)<input id="live-roi-y" type="number" min="0" max="99" value="40"></label><label>Width (%)<input id="live-roi-w" type="number" min="1" max="100" value="20"></label><label>Height (%)<input id="live-roi-h" type="number" min="1" max="100" value="20"></label></div><button id="live-add-label">Add region</button><p id="live-label-message" role="status" aria-live="polite"></p></div></div><div id="live-labels-list"></div>
     </div><p class="muted">Download reconstruction &amp; settings to keep the name, regions, comparison reference and replayable calculation together.</p>
   </section>
   <details class="method-guide"><summary>Example comparison protocol</summary>

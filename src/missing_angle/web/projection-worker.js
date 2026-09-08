@@ -1,5 +1,5 @@
 'use strict';
-if (typeof CT === 'undefined') importScripts('projection-core.js?v=9');
+if (typeof CT === 'undefined') importScripts('projection-core.js?v=11');
 let input,options,image,baseline,baselineEvaluation,selected,order,cache,paused=false,resumeWait=null,delay=12,running=false;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function gate(early=false){if(paused)await new Promise(resolve=>resumeWait=resolve);await sleep(delay && early ? 140 : delay);}
@@ -23,7 +23,8 @@ async function run(stage) {
     if(!cache.has(view))cache.set(view,CT.matrixForView(input,options.size,view));
     CT.update(cache.get(view),image,input.sinogram[view]);
     if(k===order.length-1&&stage==='refine')CT.smooth(image,options.size,options.smoothing);
-    if(stage==='build'||k%Math.max(1,Math.floor(order.length/50))===0||k===order.length-1)snapshot(stage,pass*order.length+k+1,total,view,pass+1);
+    if(stage==='refine'&&k%20===0)postMessage({type:'progress',done:pass*order.length+k+1,total});
+    if(stage==='build'||k===order.length-1)snapshot(stage,pass*order.length+k+1,total,view,pass+1);
   }
   if(stage==='build')baseline=image.slice();
   postMessage({type:'scoring'});
