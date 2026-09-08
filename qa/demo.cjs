@@ -25,6 +25,15 @@ async function main(){
   const c=id=>page.locator('#live-'+id);
   async function ready(){await page.waitForFunction(()=>!document.querySelector('#live-start').disabled);}
   async function complete(){await page.waitForFunction(()=>!document.querySelector('#live-download').disabled);}
+  async function reflow(){
+   const report=await page.evaluate(()=>{
+    const result={width:innerWidth,scroll:document.documentElement.scrollWidth};
+    if(result.scroll<=result.width)return result;
+    result.controls=[...document.querySelectorAll('select,input,button,progress')].map(el=>{const prior=el.style.display;el.style.display='none';const width=document.documentElement.scrollWidth;el.style.display=prior;return {id:el.id,tag:el.tagName,width};}).filter(entry=>entry.width<result.scroll);
+    return result;
+   });
+   assert(report.scroll<=report.width,JSON.stringify(report));
+  }
   async function accessibility(stage){
    const r=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
    assert.deepEqual(r.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],stage);
@@ -41,7 +50,7 @@ async function main(){
    await page.locator('#theme-choice').selectOption(theme);
    await accessibility(theme+' desktop');
    await page.setViewportSize({width:375,height:812});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),JSON.stringify(await page.evaluate(()=>({width:innerWidth,offset:scrollX,body:document.body.getBoundingClientRect().width,client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,overflow:[...document.querySelectorAll('body *')].filter(el=>el.getBoundingClientRect().right>innerWidth+1).map(el=>({tag:el.tagName,id:el.id,class:el.className,right:el.getBoundingClientRect().right,parent:el.parentElement?.id,overflow:getComputedStyle(el).overflowX,text:el.textContent.slice(0,80)})).slice(0,100)}))));
+   await reflow();
    await accessibility(theme+' mobile');
    await page.setViewportSize({width:1440,height:1000});
   }
@@ -68,7 +77,7 @@ async function main(){
   }
   await c('preset-sector').click();await complete();assert.equal(await c('selection').inputValue(),'sector');
   await page.setViewportSize({width:375,height:812});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),JSON.stringify(await page.evaluate(()=>({width:innerWidth,offset:scrollX,body:document.body.getBoundingClientRect().width,client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,overflow:[...document.querySelectorAll('body *')].filter(el=>el.getBoundingClientRect().right>innerWidth+1).map(el=>({tag:el.tagName,id:el.id,class:el.className,right:el.getBoundingClientRect().right,parent:el.parentElement?.id,overflow:getComputedStyle(el).overflowX,text:el.textContent.slice(0,80)})).slice(0,100)}))));
+  await reflow();
   await accessibility('narrow screen');
   if(process.env.CT_SCREENSHOTS){
    const folder=path.join(root,'output/launch');await fs.mkdir(folder,{recursive:true});
