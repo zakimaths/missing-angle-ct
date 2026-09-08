@@ -48,7 +48,7 @@ Use `angle run` instead of `angle public-ct` for synthetic experiments. Omitting
 
 ## Rebuild the GitHub demo
 
-Install Node 22.23.2 or newer alongside the Python environment. The builder uses the browser solver to generate the introductory comparison from measured projections.
+Install Node 22.23.2 alongside the Python environment. The builder uses the browser solver to generate the introductory comparison from measured projections.
 
 ```sh
 uv run --locked --no-editable python scripts/build_demo.py

@@ -32,7 +32,7 @@
       "reference_sha256": "65f55d1c45ab368dd1853f6d25b838306f516bf3c3c39b095b575693d92bff35"
     },
     "synthetic": {
-      "generator_sha256": "61ea05f86419952dd263120a0269d9d4a6cf7218388abc8ee56cfb2122fa6efa"
+      "generator_sha256": "cd035e5496c954d0b712e819435a0f556e0f5b7c370bb0034c84457ac46c53dc"
     }
   },
   "description": "Three measured HTC objects, four real body slices with simulated projections, and exact analytic disks. Body slices come from two volumes. Authors FBP and source CT references are estimates, not anatomical truth. Each enhancement starts from the same first pass; no reference enters the solver. No smoothing selection or parameter fitting occurs.",

@@ -1,0 +1,37 @@
+/* Themes change the interface, never the numerical image or error-map scale. */
+:root[data-theme="pink"] {
+  --ink: #3d2332;
+  --muted: #705464;
+  --accent: #a72d68;
+  --link: #94265d;
+  --canvas: #fff8fb;
+  --surface: #faeaf2;
+  --hover: #f3dce8;
+  --selected: #f3dce8;
+  --line: #d8b8c9;
+  --border: #aa7d94;
+  --plot-line: #cfaebf;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #f4eaf0;
+  --muted: #c6adbc;
+  --accent: #f29bc3;
+  --link: #f5afd0;
+  --on-accent: #291922;
+  --canvas: #19151b;
+  --surface: #29212b;
+  --hover: #382c38;
+  --selected: #423041;
+  --line: #554450;
+  --border: #947988;
+  --error: #ffc5b3;
+  --error-bg: #39241f;
+  --error-border: #de947a;
+  --plot-line: #786271;
+  --ray: #e89a76;
+}
+:root[data-theme="dark"] header nav img,
+:root[data-theme="dark"] footer nav img { filter: brightness(0) invert(1); }
+/* Scientific plots retain their labelled teal/rust series and white axes. */
+.live-plots canvas { background: #fff; border: 1px solid var(--line); }

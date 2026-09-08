@@ -18,7 +18,7 @@ async function main(){
  let browser;
  try{
   browser=await engine.launch();
-  const context=await browser.newContext({viewport:{width:1440,height:1000}});
+  const context=await browser.newContext({viewport:{width:1440,height:1000},colorScheme:'light'});
   const page=await context.newPage(),errors=[],requests=[],failures=[];
   page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));
   page.on('response',r=>{if(r.status()>=400)failures.push(r.url());});
@@ -37,6 +37,16 @@ async function main(){
   await page.keyboard.press(engine===webkit&&process.platform==='darwin'?'Alt+Tab':'Tab');assert.equal(await page.locator(':focus').innerText(),'Skip to reconstruction controls');
   await page.keyboard.press('Enter');assert.equal(await page.locator(':focus').getAttribute('id'),'live-inputs');
   await accessibility('initial desktop');
+  for(const theme of ['pink','dark']) {
+   await page.locator('#theme-choice').selectOption(theme);
+   await accessibility(theme+' desktop');
+   await page.setViewportSize({width:375,height:812});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),JSON.stringify(await page.evaluate(()=>({width:innerWidth,offset:scrollX,body:document.body.getBoundingClientRect().width,client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,overflow:[...document.querySelectorAll('body *')].filter(el=>el.getBoundingClientRect().right>innerWidth+1).map(el=>({tag:el.tagName,id:el.id,class:el.className,right:el.getBoundingClientRect().right,parent:el.parentElement?.id,overflow:getComputedStyle(el).overflowX,text:el.textContent.slice(0,80)})).slice(0,100)}))));
+   await accessibility(theme+' mobile');
+   await page.setViewportSize({width:1440,height:1000});
+  }
+  await page.reload();await ready();
+  assert.equal(await page.locator('#theme-choice').inputValue(),'dark','Theme preference survives reload');
   // A public shared link sets controls but does not start an unrequested calculation.
   await page.goto(origin+'/?sample=chest-64&views=90&selection=sector&size=64');await ready();
   assert.equal(await c('source').inputValue(),'chest-64');assert.equal(await c('count').inputValue(),'90');
@@ -50,9 +60,15 @@ async function main(){
   await c('refine').click();await complete();await c('first-pass').click();await complete();
   assert.match(await c('labels-list').innerText(),/Boundary/);
   await accessibility('calculated image and checkpoints');
+  const pixels=await c('image').evaluate(canvas=>canvas.toDataURL());
+  for(const theme of ['pink','light','dark']) {
+   await page.locator('#theme-choice').selectOption(theme);
+   assert.equal(await c('image').evaluate(canvas=>canvas.toDataURL()),pixels,'Changing appearance preserves reconstructed pixels');
+   await accessibility(theme+' calculated state');
+  }
   await c('preset-sector').click();await complete();assert.equal(await c('selection').inputValue(),'sector');
-  await page.setViewportSize({width:375,height:812});
-  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await page.setViewportSize({width:375,height:812});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),JSON.stringify(await page.evaluate(()=>({width:innerWidth,offset:scrollX,body:document.body.getBoundingClientRect().width,client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,overflow:[...document.querySelectorAll('body *')].filter(el=>el.getBoundingClientRect().right>innerWidth+1).map(el=>({tag:el.tagName,id:el.id,class:el.className,right:el.getBoundingClientRect().right,parent:el.parentElement?.id,overflow:getComputedStyle(el).overflowX,text:el.textContent.slice(0,80)})).slice(0,100)}))));
   await accessibility('narrow screen');
   if(process.env.CT_SCREENSHOTS){
    const folder=path.join(root,'output/launch');await fs.mkdir(folder,{recursive:true});
@@ -73,6 +89,12 @@ async function main(){
   await page.waitForFunction(()=>document.querySelector('#live-pause').textContent==='Continue');
   await c('one').click();await c('stop').click();assert(await c('download').isDisabled());
   assert(await c('restore-checkpoint').isDisabled());
+  // Recover a failed source download with the visible retry action.
+  await page.route('**/projection-data/ta.json',route=>route.abort());
+  await page.goto(origin);await c('retry').waitFor({state:'visible'});
+  assert(await c('start').isDisabled());
+  await page.unroute('**/projection-data/ta.json');await c('retry').click();await ready();
+  assert(await c('retry').isHidden());
   assert.deepEqual(errors,[]);assert.deepEqual(failures,[]);
   console.log(`${engine.name()}: complete demo, shared links, quick comparisons, cancellation, gallery and reflow passed`);
  }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}

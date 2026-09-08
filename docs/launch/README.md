@@ -28,3 +28,13 @@ The complete generated demo passed Chromium and WebKit checks on macOS: live cal
 The sharing image and Open Graph/X metadata are included in the site. Actual X and LinkedIn preview rendering has not been checked inside those services. No social posts have been sent.
 
 The body samples use simulated projections of real CT images. Acquired measurements in the browser come from Helsinki objects. The demo is a reconstruction and evaluation tool, not a diagnostic system.
+
+## Three new post options
+
+Each draft includes a LinkedIn version, an X version and an attachment suggestion:
+
+1. [Introducing the project](posts/01-project.md)
+2. [Why angular coverage matters](posts/02-angles.md)
+3. [Measuring whether refinement helps](posts/03-evaluation.md)
+
+Screenshots and recordings are captured with `qa/capture.cjs`. The local media pack is under `output/playwright/social/`; recordings show actual calculations from 360 views. The body recording uses simulated projections of a real CT slice. See the capture evidence and attribution included with the media.

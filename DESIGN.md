@@ -34,7 +34,7 @@ components:
 
 The default surface is the shared browser reconstruction lab in `src/missing_angle/web/`, embedded in the local Mac app and published to GitHub Pages. Its CSS and panel are the visual authority for that surface. The detailed Streamlit descriptions below describe the earlier Python experiment workspaces where they differ.
 
-Use formal, educational language for general users. Preserve the white, ink and teal workstation, native controls, clear focus and labelled scientific figures. Saved checkpoints sit beside refinement controls. Show each checkpoint's starting image and scores, and allow exact restoration before testing an alternative. The angular ring represents relative sequence position; physical angles remain explicit in labels. Clinical 3D calculation currently links to its separate local workflow.
+Use formal, educational language for general users. The public demo offers Light (white, ink and teal), Pink (pale pink with a dark rose accent), and Dark (deep plum with a light pink accent) appearances. Preserve native controls, clear focus and labelled scientific figures. The selected appearance persists locally; the system preference supplies the initial light or dark appearance. Reconstruction pixels and the signed-error colour scale never change with the interface theme. Scientific scatter plots retain white axes and their labelled teal/rust series. Saved checkpoints sit beside refinement controls. Show each checkpoint's starting image and scores, and allow exact restoration before testing an alternative. The angular ring represents relative sequence position; physical angles remain explicit in labels. Clinical 3D calculation currently links to its separate local workflow.
 
 ## Overview
 
