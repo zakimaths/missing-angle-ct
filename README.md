@@ -24,8 +24,8 @@ Use uv 0.12.10 or newer for a fresh Python download. The Mac workflow pins uv 0.
 ## What students can do
 
 - **Real CT lab** opens first. Choose a chest slice, viewing angles, coverage and noise; press **Reconstruct this slice**. Display windows help you see lung, soft tissue or bone.
-- **Watch the reconstruction** from the blank image through each actual correction pass. Play, pause, step or scrub; no automatic animation starts on arrival.
-- **Compare methods:** filtered back projection (FBP), repeated correction (SART), and SART with total-variation smoothing. The images share one brightness scale. Smoothing can remove both artifacts and useful detail.
+- **Watch the reconstruction** from the blank image through individual views in the first pass, then completed correction passes. Play, pause, step or scrub; no automatic animation starts on arrival.
+- **Compare methods:** filtered back projection (FBP), repeated correction (SART), and SART with total-variation smoothing. Switch between images and absolute difference maps, with a shared scale and optional centre zoom. Smoothing can remove both artifacts and useful detail.
 - **Download and recalculate** an experiment, including original pixels, measurements, settings and every saved step.
 - **Optional synthetic practice, feature challenge and artifact examples** use shapes with known answers to explain concepts that cannot be scored reliably on unlabelled real CT images.
 
@@ -61,9 +61,13 @@ uv run --locked --no-editable ruff check src tests scripts app
 uv run --locked --no-editable pytest
 ```
 
-The local installed package passed **65 tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
+The local installed package passed **67 tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
 
 The scientific GitHub workflow runs Apple Silicon and Intel Mac checks and replays a shared experiment on both architectures. The Pages workflow tests and builds the demo on Linux before deployment. Workflow badges/status on GitHub show the current remote result; [validation records](docs/VALIDATION.md) distinguish local observations from remote execution. Cross-platform comparisons use stated tolerances, not a promise of universal bitwise identity.
+
+## Real measured scanner data
+
+A separate [reproducible walnut probe](docs/MEASURED_DATA.md) reconstructs acquired fan-beam measurements using the published scanner matrix. It checks withheld-ray prediction and runs on the existing CPU stack. This prototype is available from the command line; integration into the student interface and DICOM import are proposed next steps.
 
 ## Results and limits
 

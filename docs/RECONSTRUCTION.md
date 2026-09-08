@@ -21,9 +21,11 @@ Numbers are mean whole-image RMSE against the prepared CT reference, in relative
 
 ## Actual steps, not a loading animation
 
-The saved history contains the initial zero image and the numerical image after every full correction/smoothing pass. Playback renders those arrays at a fixed 0–0.6 display scale. Its last frame is exactly the saved smoothed reconstruction before display conversion. Playback does not interpolate between images or imply wall-clock computation speed. It starts paused, supports play/pause, previous/next and a keyboard-operable step slider, and stops when hidden or scrolled away.
+Version 0.3.1 also saves individual-view snapshots during the first pass, where most of the visible build-up occurs. The saved history retains the initial zero image and the numerical image after every full correction/smoothing pass. First-pass views use scikit-image's golden-angle order; the last early snapshot followed by TV smoothing equals the first complete pass. Playback renders those arrays at a fixed 0–0.6 display scale. Its last frame is exactly the saved smoothed reconstruction before display conversion. Playback does not interpolate between images or imply wall-clock computation speed. It starts paused, supports play/pause, previous/next and a keyboard-operable step slider, and stops when hidden or scrolled away.
 
-Version-3 CT bundles contain the original 11 arrays plus `regularized` and `history`, with the complete method recipe, source attribution and licence. Import validates bounded settings, history dimensions, source hashes and start/final frames. Replay checks every saved intermediate image as well as FBP, SART and the final smoothed image. Versions 1 and 2 remain supported.
+Version-4 CT bundles contain the original 11 arrays plus `regularized`, `history` and `early_history`, with the complete method recipe, source attribution and licence. Import validates bounded settings, history dimensions, source hashes and start/final frames. Replay checks every saved intermediate image as well as FBP, SART and the final smoothed image. Versions 1, 2 and 3 remain supported.
+
+The comparison defaults to absolute difference maps on a shared 0–0.03 relative-attenuation scale. These show error, not anatomy; the reference stays grayscale. Students can switch back to reconstructions or enlarge the central half of each image. Complete-angle reconstructions can look similar because their errors are small, rather than because images are duplicated.
 
 ## Reproduce
 

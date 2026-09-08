@@ -11,6 +11,7 @@ root = Path('demo')
 cases = json.loads((root / 'experiments.json').read_text())['experiments']
 assert len(cases) == 32
 assert len({case['key'] for case in cases}) == 32
+assert all(len(c['frames']) == len(c['frame_labels']) and len(c['frames']) > 11 for c in cases)
 for case in cases:
     for path in case['frames']:
         assert (root / path).is_file()
@@ -19,6 +20,10 @@ for case in cases:
                           np.asarray(Image.open(folder / 'regularized.png')))
     exp, manifest = load_bundle((folder / 'experiment.zip').read_bytes())
     assert manifest['id'] == case['id']
+    assert manifest['schema'] == 'missing-angle/4'
+    for method in ('fbp', 'sart', 'regularized'):
+        assert (folder / f'{method}-error.png').is_file()
+        assert (folder / f'{method}-error-detail.png').is_file()
     assert exp.geometry['source']['slice']['index'] == case['slice']
     assert exp.metrics['methods'] == case['metrics']
     if case['slice'] == 80:

@@ -21,8 +21,8 @@ def test_history_is_actual_calculation_and_replays_all_states():
         partial = iteration_history(exp.arrays['measured'], exp.arrays['theta'], 64, settings(passes, .002))
         np.testing.assert_array_equal(partial[-1], enhanced.arrays['history'][passes])
     loaded, manifest = load_bundle(export_bundle(enhanced))
-    assert manifest['schema'] == 'missing-angle/3'
-    assert set(verify_replay(loaded)['checks']) == {'fbp', 'sart', 'regularized', 'history'}
+    assert manifest['schema'] == 'missing-angle/4'
+    assert set(verify_replay(loaded)['checks']) == {'fbp', 'sart', 'regularized', 'history', 'early_history'}
     assert all(v['exact'] for v in verify_replay(loaded)['checks'].values())
 
 
@@ -61,3 +61,27 @@ def test_missing_history_and_invalid_final_frame_are_rejected():
                 altered.writestr(item, archive.read(item.filename))
     with pytest.raises(ValueError):
         load_bundle(output.getvalue())
+
+
+def test_early_views_match_the_same_first_pass_and_change_display():
+    from skimage.restoration import denoise_tv_chambolle
+    from missing_angle.playback import png_bytes, playback_sequence, comparison_png
+    exp = refine(run_public_ct(16, ExperimentConfig(size=64, views=90, span=180)), 3)
+    early = exp.arrays['early_history']
+    recipe = exp.geometry['refinement']
+    smoothed = denoise_tv_chambolle(early[-1], weight=recipe['weight'], eps=recipe['tv_eps'], max_num_iter=recipe['tv_max_iterations'])
+    np.testing.assert_array_equal(smoothed, exp.arrays['history'][1])
+    assert len({png_bytes(frame) for frame in early}) == len(early)
+    images, labels = playback_sequence(exp)
+    assert '1 of 90 views' in labels[1]
+    np.testing.assert_array_equal(images[-1], exp.arrays['regularized'])
+    assert len(images) == len(labels)
+    assert comparison_png(exp.arrays['fbp'], exp.arrays['phantom']) != comparison_png(exp.arrays['sart'], exp.arrays['phantom'])
+
+
+def test_version_three_bundles_still_replay():
+    exp = refine(run_public_ct(48, ExperimentConfig(size=64, views=12)), 2)
+    exp.arrays.pop('early_history')
+    loaded, manifest = load_bundle(export_bundle(exp))
+    assert manifest['schema'] == 'missing-angle/3'
+    assert all(check['exact'] for check in verify_replay(loaded)['checks'].values())

@@ -15,7 +15,7 @@ from .config import ExperimentConfig
 from .experiment import Experiment, evaluate, replay_experiment
 from .geometry import acquisition_angles, detector_positions
 from .public_ct import KIND, licence_text, prepare_reference, validate_source
-from .refinement import validate_settings
+from .refinement import validate_settings, early_counts
 
 SCHEMA = "missing-angle/1"
 ARRAY_NAMES = {"phantom", "feature_weight", "background_mask", "support_mask", "theta",
@@ -64,7 +64,8 @@ def experiment_id(experiment):
 
 def export_bundle(experiment):
     public_ct = "source_hu" in experiment.arrays
-    schema = "missing-angle/3" if "history" in experiment.arrays else "missing-angle/2" if public_ct else SCHEMA
+    schema = ("missing-angle/4" if "early_history" in experiment.arrays else
+              "missing-angle/3" if "history" in experiment.arrays else "missing-angle/2" if public_ct else SCHEMA)
     manifest = {"schema": schema, "id": experiment_id(experiment),
                 "created_utc": datetime.now(timezone.utc).isoformat(),
                 "config": experiment.config.to_dict(), "geometry": experiment.geometry,
@@ -121,7 +122,7 @@ def _load_bundle(data):
         raise ValueError("Bundle exceeds the 16 MB limit")
     with zipfile.ZipFile(BytesIO(data)) as archive:
         entries = archive.infolist()
-        if len(entries) > 15 or len({i.filename for i in entries}) != len(entries):
+        if len(entries) > 16 or len({i.filename for i in entries}) != len(entries):
             raise ValueError("Unexpected or duplicate bundle files")
         if any(i.flag_bits & 1 or i.compress_type not in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED)
                for i in entries):
@@ -131,14 +132,17 @@ def _load_bundle(data):
         if archive.getinfo("manifest.json").file_size > 128 * 1024:
             raise ValueError("Manifest exceeds the size limit")
         manifest = json.loads(archive.read("manifest.json"), parse_constant=_reject_constant)
-        enhanced = manifest["schema"] == "missing-angle/3"
-        public_ct = manifest["schema"] in ("missing-angle/2", "missing-angle/3")
-        if manifest["schema"] not in (SCHEMA, "missing-angle/2", "missing-angle/3"):
+        early = manifest["schema"] == "missing-angle/4"
+        enhanced = manifest["schema"] in ("missing-angle/3", "missing-angle/4")
+        public_ct = manifest["schema"] in ("missing-angle/2", "missing-angle/3", "missing-angle/4")
+        if manifest["schema"] not in (SCHEMA, "missing-angle/2", "missing-angle/3", "missing-angle/4"):
             raise ValueError("Unsupported bundle version")
         names = ARRAY_NAMES | {"source_hu"} if public_ct else ARRAY_NAMES
         if enhanced:
             names = names | {"regularized", "history"}
             recipe = validate_settings(manifest["geometry"]["refinement"])
+        if early:
+            names = names | {"early_history"}
         expected = {"manifest.json"} | {f"arrays/{n}.npy" for n in names}
         if public_ct:
             expected.add("DATA-LICENSE.txt")
@@ -153,7 +157,8 @@ def _load_bundle(data):
             raise ValueError("Incomplete array checksums")
         arrays = {}
         for name in names:
-            shape = ((recipe["passes"]+1, config.size, config.size) if name == "history" else
+            shape = ((len(early_counts(config.views)), config.size, config.size) if name == "early_history" else
+                     (recipe["passes"]+1, config.size, config.size) if name == "history" else
                      (512, 512) if name == "source_hu" else
                      (config.views,) if name == "theta" else (config.size,) if name == "detector"
                      else (config.size, config.views) if name in ("clean", "measured")
@@ -213,6 +218,8 @@ def verify_replay(experiment, manifest=None):
     replay = replay_experiment(experiment)
     checks = {}
     methods = ("fbp", "sart", "regularized", "history") if "history" in experiment.arrays else ("fbp", "sart")
+    if "early_history" in experiment.arrays:
+        methods += ("early_history",)
     for method in methods:
         before, after = experiment.arrays[method], replay.arrays[method]
         checks[method] = {"exact": bool(np.array_equal(before, after)),

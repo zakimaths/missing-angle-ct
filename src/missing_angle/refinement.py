@@ -1,7 +1,7 @@
 """Measured-data-only SART + TV refinement, with exact saved iteration states."""
 import numpy as np
 from skimage.restoration import denoise_tv_chambolle
-from skimage.transform import iradon_sart
+from skimage.transform import iradon_sart, order_angles_golden_ratio
 
 ALGORITHM = "sart-tv-v1"
 
@@ -38,6 +38,25 @@ def iteration_history(measured, theta, size, recipe):
     return np.stack(history)
 
 
+def early_counts(views):
+    """Bounded checkpoints, dense at the start where image formation is most visible."""
+    return sorted({n for n in (1, 2, 3, 4, 6, 8, 12, 20, 32, 64, 128, views) if n <= views})
+
+
+def first_pass_history(measured, theta, size, recipe):
+    """Same SART updates and ordering as one full pass, before its TV step."""
+    validate_settings(recipe)
+    checkpoints = set(early_counts(len(theta)))
+    image = np.zeros((size, size), dtype=np.float64)
+    frames = []
+    for count, index in enumerate(order_angles_golden_ratio(theta), 1):
+        image = iradon_sart(measured[:, index:index+1]/(2/size), theta=theta[index:index+1],
+                            image=image, relaxation=recipe['relaxation'], clip=(0, np.inf))
+        if count in checkpoints:
+            frames.append(image.copy())
+    return np.stack(frames)
+
+
 def refine(experiment, passes=10, weight=.002):
     from .experiment import Experiment, evaluate
     if "source_hu" not in experiment.arrays:
@@ -47,5 +66,7 @@ def refine(experiment, passes=10, weight=.002):
     arrays["history"] = iteration_history(arrays["measured"], arrays["theta"],
                                          experiment.config.size, recipe)
     arrays["regularized"] = arrays["history"][-1].copy()
+    arrays["early_history"] = first_pass_history(arrays["measured"], arrays["theta"],
+                                                experiment.config.size, recipe)
     return Experiment(experiment.config, arrays, {**experiment.geometry, "refinement": recipe},
                       evaluate(arrays, experiment.config), dict(experiment.timings))

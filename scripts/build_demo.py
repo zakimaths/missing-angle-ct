@@ -6,7 +6,7 @@ import shutil
 
 from missing_angle.bundle import export_bundle, experiment_id, provenance
 from missing_angle.config import ExperimentConfig
-from missing_angle.playback import png_bytes
+from missing_angle.playback import png_bytes, comparison_png, playback_sequence
 from missing_angle.public_ct import catalogue, licence_text, run_public_ct
 from missing_angle.refinement import refine
 
@@ -30,21 +30,27 @@ def build(destination):
             exp = refine(run_public_ct(index, config), passes=10, weight=.002)
             # Same pass count without TV separates extra iterations from the smoothing effect.
             control = refine(exp, passes=10, weight=0.)
-            name = f'{index}-{key}'
+            name = f'{index}-{key}-{experiment_id(exp)}'
             folder = assets / name
             folder.mkdir(exist_ok=True)
             for method in ('phantom', 'fbp', 'sart', 'regularized'):
-                (folder / f'{method}.png').write_bytes(png_bytes(exp.arrays[method]))
+                (folder / f'{method}.png').write_bytes(comparison_png(exp.arrays[method]))
+                (folder / f'{method}-detail.png').write_bytes(comparison_png(exp.arrays[method], detail=True))
+                if method != 'phantom':
+                    for detail in (False, True):
+                        suffix = '-detail' if detail else ''
+                        (folder / f'{method}-error{suffix}.png').write_bytes(comparison_png(exp.arrays[method], exp.arrays['phantom'], detail))
             (folder / 'original.png').write_bytes(png_bytes(exp.arrays['source_hu'], -1350, 150))
             frames = []
-            for step, image in enumerate(exp.arrays['history']):
+            images, labels = playback_sequence(exp)
+            for step, image in enumerate(images):
                 frame = f'assets/{name}/step-{step}.png'
                 (destination / frame).write_bytes(png_bytes(image))
                 frames.append(frame)
             (folder / 'experiment.zip').write_bytes(export_bundle(exp))
             entry = {'key': name, 'slice': index, 'protocol': key, 'label': label, 'lesson': lesson,
                      'views': views, 'span': span, 'noise': noise, 'size': config.size,
-                     'id': experiment_id(exp), 'frames': frames, 'folder': f'assets/{name}',
+                     'id': experiment_id(exp), 'frames': frames, 'frame_labels': labels, 'folder': f'assets/{name}',
                      'metrics': exp.metrics['methods'], 'refinement': exp.geometry['refinement']}
             entries.append(entry)
             rows.append({'slice': index, 'protocol': key,

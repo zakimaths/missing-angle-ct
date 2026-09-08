@@ -11,7 +11,7 @@ from missing_angle.game import Challenge, PACKS, PRESETS
 from missing_angle.plots import image_figure, sinogram_figure, ct_source_figure
 from missing_angle.public_ct import catalogue, licence_text, run_public_ct, WINDOWS
 from missing_angle.refinement import refine
-from missing_angle.playback import player_html
+from missing_angle.playback import player_html, comparison_png
 
 
 def social_links(location):
@@ -267,24 +267,27 @@ def public_ct():
     with right:
         st.markdown("### Watch the image take shape")
         if "history" in exp.arrays:
-            st.iframe(player_html(exp.arrays["history"], smoothing=bool(exp.geometry["refinement"]["weight"])), height="content")
+            st.iframe(player_html(exp), height="content")
         else:
             st.info("This older experiment has no saved steps. Press Reconstruct this slice to record them.")
-        st.caption("Each pass reuses all available viewing angles. The method corrects the image and uses smoothing when its strength is above zero. "
+        st.caption("The early snapshots show views being added during the first pass. Later snapshots show completed passes. Each pass reuses all available viewing angles. The method corrects the image and uses smoothing when its strength is above zero. "
                    "Extra passes do not add measurements from missing angles.")
     st.markdown("### Compare reconstruction methods")
     items = [("fbp", "Fast method · FBP"), ("sart", "Repeated correction · SART")]
     if "regularized" in exp.arrays:
         items.append(("regularized", "Correction + smoothing"))
+    display = st.radio("Compare the images or highlight their differences", ["Reconstructed images", "Difference maps"], index=1, horizontal=True)
+    detail = st.checkbox("Zoom into the centre of the image")
+    st.caption("Difference maps show absolute pixel error: black means a match, yellow means a difference of 0.03 or more. The same scale is used for every method. These are error maps, not anatomy.")
     for col, (method, label) in zip(st.columns(len(items)), items):
         with col:
             st.markdown(f"**{label}**")
-            st.image(image_figure(exp, method), width="stretch")
+            st.image(comparison_png(exp.arrays[method], exp.arrays["phantom"] if display == "Difference maps" else None, detail), width="stretch")
     st.write("**FBP** combines the views using a filter. **SART** repeatedly corrects an image to fit the measurements. "
              "**Correction + smoothing** adds gentle total-variation (TV) smoothing between corrections. "
              "Smoothing can reduce streaks and grain, but it can also remove small details.")
     st.caption(f"Basic SART: {c.sart_passes} passes. Correction + smoothing: {exp.geometry.get('refinement', {}).get('passes', 0)} passes. "
-               "All methods use the same brightness scale: 0–0.6 relative attenuation. A brighter display does not mean a better reconstruction.")
+               "Reconstructed images use a fixed 0–0.6 scale; error maps use 0–0.03. With many views, the reconstructions should look similar. Use difference maps or centre zoom to inspect small errors.")
     st.table([{"Method": label, "Difference from reference ↓": f"{exp.metrics['methods'][method]['rmse']:.5f}",
                "Mismatch with measurements ↓": f"{exp.metrics['methods'][method]['raster_residual_rmse']:.5f}"}
               for method, label in items])
