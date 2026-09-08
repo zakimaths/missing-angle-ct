@@ -30,6 +30,12 @@ components:
 
 # Design System: Missing-Angle CT Detective
 
+## Current live interface
+
+The default surface is the shared browser reconstruction lab in `src/missing_angle/web/`, embedded in the local Mac app and published to GitHub Pages. Its CSS and panel are the visual authority for that surface. The detailed Streamlit descriptions below describe the earlier Python experiment workspaces where they differ.
+
+Use formal, educational language for general users. Preserve the white, ink and teal workstation, native controls, clear focus and labelled scientific figures. Saved checkpoints sit beside refinement controls. Show each checkpoint's starting image and scores, and allow exact restoration before testing an alternative. The angular ring represents relative sequence position; physical angles remain explicit in labels. Clinical 3D calculation currently links to its separate local workflow.
+
 ## Overview
 
 **Creative North Star: "Quiet scientific workstation"**
@@ -166,6 +172,6 @@ The reduced-motion media query disables transitions and smooth scrolling. The ap
 
 ## Student workflow and recorded playback (0.3)
 
-Real CT lab opens first. The other activities are Synthetic practice, Feature challenge and Artifact examples. The top introduction explains CT reconstruction and the purpose of missing-angle experiments in student language. Method names are paired with explanations; preparation and numerical details remain available in expanders. Header and footer retain the owner’s three social links.
+Real CT lab opens first. The other activities are Synthetic practice, Feature challenge and Artifact examples. The top introduction explains CT reconstruction and missing-angle experiments in formal, accessible language for general users. Method names are paired with explanations; preparation and numerical details remain available in expanders. Header and footer retain the owner’s three social links.
 
 The main teaching moment is the original CT image alongside a paused player showing actual correction states. Play/pause, previous/next and a labelled step slider are required. Brightness is fixed; playback speed is not calculation time. Stop playback when hidden or offscreen. The local app calculates new runs; GitHub Pages presents 32 recorded runs with original data and downloads. The public demo uses the existing white, ink and teal palette, a responsive image grid and readable system typography.

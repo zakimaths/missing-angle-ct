@@ -28,7 +28,7 @@ uv run --offline --locked --project clinical python clinical/reconstruct.py --vi
 uv run --offline --locked --project clinical python clinical/verify_run.py runs/clinical-a002 runs/clinical-repeat
 ```
 
-The second command compares every reconstructed voxel before display conversion, at absolute tolerance 1e-6 in attenuation units. It checks source hashes, parameters and dependency versions. Local Apple Silicon testing produced a maximum difference of zero. This does not promise bitwise identity on every computer. The dedicated GitHub workflow repeats the calculation on Apple Silicon and Intel runners; its status records remote execution.
+The second command compares every reconstructed voxel before display conversion, at absolute tolerance 1e-6 in attenuation units. It checks source hashes, parameters and dependency versions, and separately compares the loaded volume headers' origin, spacing and direction at absolute tolerance 1e-8. Local Apple Silicon testing produced a maximum difference of zero. This does not promise bitwise identity on every computer. The dedicated GitHub workflow repeats the calculation on Apple Silicon and Intel runners; its status records remote execution.
 
 ## Calculation and comparison
 

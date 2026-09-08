@@ -1,6 +1,7 @@
 'use strict';
 if (typeof CT === 'undefined') importScripts('projection-core.js?v=11');
 let input,options,image,baseline,baselineEvaluation,selected,order,cache,paused=false,resumeWait=null,delay=12,running=false;
+let checkpoints=[],activeCheckpoint=-1;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function gate(early=false){if(paused)await new Promise(resolve=>resumeWait=resolve);await sleep(delay && early ? 140 : delay);}
 function snapshot(stage,done,total,view,pass){const copy=Float32Array.from(image);postMessage({type:'frame',stage,done,total,view,pass,image:copy},[copy.buffer]);}
@@ -27,12 +28,20 @@ async function run(stage) {
     if(stage==='build'||k===order.length-1)snapshot(stage,pass*order.length+k+1,total,view,pass+1);
   }
   if(stage==='build')baseline=image.slice();
+  await complete(stage);
+}
+async function complete(stage) {
   postMessage({type:'scoring'});
   const evaluation=await evaluateImage();
   if(stage==='build')baselineEvaluation={selected:evaluation.selected,unused:evaluation.unused};
+  if(stage!=='restore') {
+    const parent=activeCheckpoint;
+    activeCheckpoint=checkpoints.length;
+    checkpoints.push({image:image.slice(),options:{...options},parent});
+  }
   const observed=evaluation.selected.relative,withheld=evaluation.unused?.relative??null;
   const result=Float64Array.from(image);
-  postMessage({type:'complete',stage,observed,withheld,evaluation,baselineEvaluation,image:result,baseline:Float64Array.from(baseline),selected,order,options,algorithm:CT.VERSION});running=false;
+  postMessage({type:'complete',stage,checkpoint:activeCheckpoint,parent:checkpoints[activeCheckpoint].parent,observed,withheld,evaluation,baselineEvaluation,image:result,baseline:Float64Array.from(baseline),selected,order,options,algorithm:CT.VERSION});running=false;
 }
 onmessage=async event=>{
   const m=event.data;
@@ -46,10 +55,16 @@ onmessage=async event=>{
       input=CT.validate(m.input);options=CT.settings(m.options,input.angles_deg.length);
       if(options.size*input.sinogram[0].length*options.views>14000000)throw Error('Reduce the selected views or image size to fit the browser memory budget.');
       selected=CT.selectViews(input.angles_deg.length,options.views,options.selection);order=CT.viewOrder(selected);
-      cache=new Map();paused=false;delay=m.slow?12:0;await run('build');
+      cache=new Map();checkpoints=[];activeCheckpoint=-1;paused=false;delay=m.slow?12:0;await run('build');
     }else if(m.type==='refine'){
       if(running||!image)throw Error('Complete a reconstruction before refining it.');
+      if(checkpoints.length>=13)throw Error('This experiment has 12 refinement checkpoints. Start a new reconstruction to continue.');
       options=CT.settings({...options,passes:m.passes,smoothing:m.smoothing},input.angles_deg.length);paused=false;await run('refine');
+    }else if(m.type==='restore'){
+      if(running||!Number.isInteger(m.checkpoint)||!checkpoints[m.checkpoint])throw Error('Choose a completed checkpoint before restoring it.');
+      running=true;paused=false;activeCheckpoint=m.checkpoint;
+      image=checkpoints[activeCheckpoint].image.slice();options={...checkpoints[activeCheckpoint].options};
+      await complete('restore');
     }
   }catch(error){running=false;postMessage({type:'error',message:error.message});}
 };

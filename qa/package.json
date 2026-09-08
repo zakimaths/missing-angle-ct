@@ -1,0 +1,6 @@
+{
+  "name": "missing-angle-browser-checks",
+  "private": true,
+  "scripts": {"test": "node checkpoints.cjs"},
+  "devDependencies": {"playwright": "1.63.0"}
+}

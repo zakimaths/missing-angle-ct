@@ -9,7 +9,10 @@ Version 0.4 adds a real calculator to [GitHub Pages](https://zakimaths.github.io
 3. Choose 4–721 views for the bundled data, either distributed through the acquisition or the first angles. Choose a 64, 96 or 128 pixel square grid.
 4. Reconstruct. Pause, continue, or advance one view. Every incorporated view produces a real saved first-pass snapshot. The initial 12 views play more slowly to expose image formation. Uncheck view-by-view animation to calculate faster and show only the completed image. This is the default with reduced-motion preferences; all numerical steps remain available for manual inspection.
 5. Refine with 1–6 extra correction passes and optional light neighbour smoothing. Inspect the initial image and the change introduced by refinement. Smoothing may soften edges; it is not guaranteed to improve anatomy.
-6. Download the measurements or a complete run. Open the saved run and reconstruct again to compare numerical results. Further refinement stages are replayed in order.
+6. Name and restore completed checkpoints to compare alternative refinements from the same image. The first pass and up to 12 refinement checkpoints remain available until a new reconstruction starts. Restoration uses exact completed worker values; it does not use imported reference pixels.
+7. Download the current result before leaving. Its calculation branch and checkpoint name are preserved. Other branches remain in this session; export each result you want to retain. Opening a saved run recalculates its branch from measurements and checks the final values.
+
+The stage comparison table identifies each checkpoint's starting image and reports ray RMSE, reference RMSE, MAE and bias. Error reports also include region statistics for every checkpoint using the currently selected reference and regions. Restoring an image preserves the run's region labels. A lower measurement error can accompany a higher reference error; checkpoints make both outcomes reviewable.
 
 The live body CT samples have 360 simulated views each; see [sources, preparation and checks](BODY_CT.md). The older recorded chest-image experiments remain separately labelled: their new projections are simulated and their public playback is recorded. Source references are kept separate from the live reconstruction worker.
 

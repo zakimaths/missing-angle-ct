@@ -11,6 +11,23 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('clinical', ROOT / 'clinical/reconstruct.py')
 clinical = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(clinical)
+replay_spec = importlib.util.spec_from_file_location('clinical_replay', ROOT / 'clinical/verify_run.py')
+replay = importlib.util.module_from_spec(replay_spec)
+replay_spec.loader.exec_module(replay)
+
+
+@pytest.mark.parametrize('field', ['origin', 'spacing', 'direction'])
+def test_replay_rejects_changed_physical_geometry(field):
+    header = {'origin': np.array([-4., -5., -6.]), 'spacing': np.array([1., 2., 3.]),
+              'direction': np.eye(3)}
+    replay.verify_geometry(header, header)
+    changed = {key: value.copy() for key, value in header.items()}
+    changed[field].flat[0] += .01
+    with pytest.raises(ValueError, match=field):
+        replay.verify_geometry(header, changed)
+    changed[field].flat[0] = np.nan
+    with pytest.raises(ValueError, match=field):
+        replay.verify_geometry(header, changed)
 
 
 def test_detector_counts_are_averaged_before_logarithm():

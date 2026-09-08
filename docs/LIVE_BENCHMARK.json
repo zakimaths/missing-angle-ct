@@ -1,7 +1,7 @@
 {
   "schema": "ct-benchmark/2",
   "algorithm": "ray-sart-1",
-  "node": "v24.19.0",
+  "node": "v26.7.0",
   "sources": {
     "ta": {
       "input_sha256": "d0d74a1c53eae71eab6346091ac9e7f824930f8f2d510fcf47e1b8a9978989ca",
@@ -32,7 +32,7 @@
       "reference_sha256": "65f55d1c45ab368dd1853f6d25b838306f516bf3c3c39b095b575693d92bff35"
     },
     "synthetic": {
-      "generator_sha256": "0c84bb0fa36ef67243967bf89ea16686c2c381c879a7961e695f8f68f8e97846"
+      "generator_sha256": "61ea05f86419952dd263120a0269d9d4a6cf7218388abc8ee56cfb2122fa6efa"
     }
   },
   "description": "Three measured HTC objects, four real body slices with simulated projections, and exact analytic disks. Body slices come from two volumes. Authors FBP and source CT references are estimates, not anatomical truth. Each enhancement starts from the same first pass; no reference enters the solver. No smoothing selection or parameter fitting occurs.",

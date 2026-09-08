@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "missing-angle-ct"
 version = "0.4.0"
-description = "Student CT reconstruction lab with real images, iteration playback and reproducible experiments"
+description = "CT reconstruction lab with measured views, reference comparisons and reproducible experiments"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = "MIT"

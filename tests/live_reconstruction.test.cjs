@@ -38,3 +38,30 @@ test('refinement retains one snapshot per completed pass without changing the ca
  const input=data('ta');input.angles_deg=input.angles_deg.slice(0,4);input.sinogram=input.sinogram.slice(0,4);let refined=0;const expected=new Float64Array(4096),matrices=input.angles_deg.map((_,v)=>CT.matrixForView(input,64,v)),order=CT.viewOrder([0,1,2,3]);
  await new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(Error('refinement timeout')),10000);const context=vm.createContext({setTimeout,clearTimeout,onmessage:null,postMessage:m=>{try{if(m.type==='error')throw Error(m.message);if(m.type==='frame'&&m.stage==='refine'){refined++;assert.equal(m.done,m.pass*4);}if(m.type==='complete'&&m.stage==='build'){setTimeout(()=>context.onmessage({data:{type:'refine',passes:6,smoothing:.03}}),0);}else if(m.type==='complete'){for(let p=0;p<=6;p++){for(const v of order)CT.update(matrices[v],expected,input.sinogram[v]);if(p)CT.smooth(expected,64,.03);}assert.equal(refined,6);assert.deepEqual(Array.from(m.image),Array.from(expected));clearTimeout(timeout);resolve();}}catch(e){clearTimeout(timeout);reject(e);}}});vm.runInContext(fs.readFileSync(path.join(WEB,'projection-core.js'),'utf8')+'\n'+fs.readFileSync(path.join(WEB,'projection-worker.js'),'utf8'),context);context.onmessage({data:{type:'start',input,options:{size:64,views:4,selection:'spread',passes:1,smoothing:0},slow:false}});});
 });
+
+for(const key of ['ta','chest-64'])test(`worker restores exact ${key} checkpoints and branches without carrying over later corrections`,async()=>{
+ const input=data(key);input.angles_deg=input.angles_deg.slice(0,4);input.sinogram=input.sinogram.slice(0,4);
+ const messages=[],context=vm.createContext({setTimeout,clearTimeout,onmessage:null,postMessage:m=>messages.push(structuredClone(m))});
+ vm.runInContext(fs.readFileSync(path.join(WEB,'projection-core.js'),'utf8')+'\n'+fs.readFileSync(path.join(WEB,'projection-worker.js'),'utf8'),context);
+ async function send(message){messages.length=0;await context.onmessage({data:message});const error=messages.find(m=>m.type==='error');if(error)throw Error(error.message);return messages.find(m=>m.type==='complete');}
+ const baseline=await send({type:'start',input,options:{size:64,views:4,selection:'spread',passes:1,smoothing:0},slow:false});
+ const a=await send({type:'refine',passes:1,smoothing:.03});
+ assert.equal(a.parent,0);assert.notDeepEqual(a.image,baseline.image);
+ const restored=await send({type:'restore',checkpoint:0});
+ assert.deepEqual(restored.image,baseline.image);assert.deepEqual(restored.evaluation,baseline.evaluation);
+ const b=await send({type:'refine',passes:3,smoothing:0});
+ assert.equal(b.parent,0);assert.equal(b.checkpoint,2);
+ const expected=Float64Array.from(baseline.image),order=CT.viewOrder([0,1,2,3]);
+ for(let pass=0;pass<3;pass++)for(const v of order)CT.update(CT.matrixForView(input,64,v),expected,input.sinogram[v]);
+ assert.deepEqual(Array.from(b.image),Array.from(expected));
+ const back=await send({type:'restore',checkpoint:1});assert.deepEqual(back.image,a.image);
+ // The worker, not an imported image, owns the state used for restoration.
+ const original=Array.from(back.image);back.image.fill(99);
+ assert.deepEqual(Array.from((await send({type:'restore',checkpoint:1})).image),original);
+ await assert.rejects(send({type:'restore',checkpoint:99}),/completed checkpoint/);
+ if(key==='ta') {
+  for(let i=3;i<13;i++)await send({type:'refine',passes:1,smoothing:0});
+  await assert.rejects(send({type:'refine',passes:1,smoothing:0}),/12 refinement checkpoints/);
+  assert.deepEqual((await send({type:'restore',checkpoint:0})).image,baseline.image);
+ }
+});

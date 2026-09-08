@@ -3,11 +3,21 @@ import argparse
 import json
 from pathlib import Path
 
-import itk
 import numpy as np
 
 
+def verify_geometry(first, repeated):
+    """Compare physical headers, independently of report metadata and voxel values."""
+    for name in ('origin', 'spacing', 'direction'):
+        a, b = np.asarray(first[name]), np.asarray(repeated[name])
+        if (a.shape != b.shape or not np.isfinite(a).all() or not np.isfinite(b).all()
+                or not np.allclose(a, b, rtol=0, atol=1e-8)):
+            raise ValueError(f'Volume physical {name} differs')
+
+
 def verify(first, repeated, check_reference=False):
+    import itk
+
     baseline = json.loads((first / 'report.json').read_text())
     replay = json.loads((repeated / 'report.json').read_text())
     if not replay.get('results'):
@@ -29,8 +39,16 @@ def verify(first, repeated, check_reference=False):
                 raise ValueError('Reference regression bounds require the tested configuration')
             if row['rmse_hu'] >= 25 or row['pearson_r'] is None or row['pearson_r'] <= .995:
                 raise ValueError('Full-data reconstruction failed the reference regression bounds')
-        a = itk.array_from_image(itk.imread(str(first / f'reconstruction-{views}.mha')))
-        b = itk.array_from_image(itk.imread(str(repeated / f'reconstruction-{views}.mha')))
+        original_image = itk.imread(str(first / f'reconstruction-{views}.mha'))
+        repeated_image = itk.imread(str(repeated / f'reconstruction-{views}.mha'))
+
+        def header(image):
+            return {'origin': tuple(image.GetOrigin()), 'spacing': tuple(image.GetSpacing()),
+                    'direction': itk.array_from_matrix(image.GetDirection())}
+
+        verify_geometry(header(original_image), header(repeated_image))
+        a = itk.array_from_image(original_image)
+        b = itk.array_from_image(repeated_image)
         if a.shape != b.shape or not np.isfinite(a).all() or not np.isfinite(b).all():
             raise ValueError('Invalid reconstruction volume')
         difference = float(np.max(np.abs(a - b)))
@@ -38,7 +56,8 @@ def verify(first, repeated, check_reference=False):
         if difference > 1e-6:
             raise ValueError(f'Volume differs by {difference}, tolerance 1e-6')
         results.append({'views': views, 'maximum_absolute_difference': difference,
-                        'tolerance': 1e-6, 'matched': True})
+                        'tolerance': 1e-6, 'physical_geometry_matched': True,
+                        'geometry_tolerance': 1e-8, 'matched': True})
     value = {'schema': 'ct-clinical-replay/1', 'results': results}
     (repeated / 'replay.json').write_text(json.dumps(value, indent=2) + '\n')
     return value

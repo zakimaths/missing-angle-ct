@@ -29,6 +29,7 @@ Use uv 0.12.10 or newer for a fresh Python download. The Mac workflow pins uv 0.
 - **CT image experiments** remain available. Choose a chest slice, viewing angles, coverage and noise; press **Reconstruct this slice**. Display windows help you see lung, soft tissue or bone.
 - **Watch the reconstruction** from the blank image through individual views in the first pass, then completed correction passes. Play, pause, step or scrub; no automatic animation starts on arrival.
 - **Compare methods:** filtered back projection (FBP), repeated correction (SART), and SART with total-variation smoothing. Switch between images and absolute difference maps, with a shared scale and optional centre zoom. Smoothing can remove both artifacts and useful detail.
+- **Restore and compare checkpoints:** name completed images and return to an earlier result before trying another refinement. Compare each checkpoint with its starting image and export the calculation branch you want to retain.
 - **Download and recalculate** an experiment, including original pixels, measurements, settings and every saved step.
 - **Optional synthetic practice, feature challenge and artifact examples** use shapes with known answers to explain concepts that cannot be scored reliably on unlabelled real CT images.
 
@@ -64,9 +65,11 @@ uv run --locked --no-editable ruff check src tests scripts app
 uv run --locked --no-editable pytest
 ```
 
-The local installed package passed **85 Python tests and 18 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
+The local installed package passed **88 Python tests and 20 JavaScript tests** on Apple Silicon. Tests cover independent projection mathematics, official scikit-image comparators, source integrity, real-image preparation, measurement isolation, replay and application behavior. New checks prove that saved animation steps equal independently recomputed intermediate states and that the refinement solver does not use the reference image.
 
 The scientific GitHub workflow runs Apple Silicon and Intel Mac checks and replays a shared experiment on both architectures. The Pages workflow tests and builds the demo on Linux before deployment. Workflow badges/status on GitHub show the current remote result; [validation records](docs/VALIDATION.md) distinguish local observations from remote execution. Cross-platform comparisons use stated tolerances, not a promise of universal bitwise identity.
+
+The [browser regression workflow](qa/README.md) exercises checkpoint restoration, alternative refinements, labels and exported-run replay on measured, body-simulation and analytic examples.
 
 ## Real measured scanner data
 
@@ -76,7 +79,7 @@ The [live measured-view lab](docs/LIVE_RECONSTRUCTION.md) is integrated into bot
 
 The default refinement reduced mean reference RMSE by **6.9–32.7%** versus three-pass nonnegative SART across four conditions on seven evaluation slices. Slice 80 was used for initial smoothing exploration. All slices belong to one volume, so this is within-volume evidence, not patient-level validation. Ten-pass unsmoothed SART performed better than smoothing in the clean full-angle conditions. [Full methods, comparisons and caveats](docs/RECONSTRUCTION.md).
 
-The source has no verified lesion labels, original scanner projections or documented acquiring hospital. Original CT images already contain reconstruction effects. Measurement count is not a radiation-dose estimate. Future work should use independently acquired volumes and measured sinograms with known scanner geometry.
+The chest-image source used for that refinement study has no verified lesion labels, original scanner projections or documented acquiring hospital. Original CT images already contain reconstruction effects. Measurement count is not a radiation-dose estimate. Future work should use independently acquired volumes and measured sinograms with known scanner geometry.
 
 ## Project layout
 
@@ -84,14 +87,14 @@ The source has no verified lesion labels, original scanner projections or docume
 |---|---|
 | `src/missing_angle/` | Numerical methods, local interface, bundles and CLI |
 | `src/missing_angle/data/` | Pinned public CT slices and source catalogue |
-| `demo/` | Dependency-free student demo HTML, CSS and JavaScript |
+| `demo/` | Dependency-free reconstruction demo HTML, CSS and JavaScript |
 | `scripts/` | Dataset preparation, demo generation and verification |
 | `tests/` | Scientific, replay and interface checks |
 | `docs/` | Methods, data provenance, results and validation |
 | `research/` | Earlier source-based research and feasibility results |
 | `.github/workflows/` | Mac reproducibility checks and Pages deployment |
 
-Original application code is MIT licensed. CT data is covered separately by the [3D Slicer terms and attribution](THIRD_PARTY_NOTICES.md), included in every CT export and the demo. Dependencies retain their own licences.
+Original application code is MIT licensed, except the adapted [clinical module](clinical/NOTICE), which is Apache-2.0. COBRA2026 data and derived images have separate CC BY-NC 4.0 terms. CT data is covered separately by the [3D Slicer terms and attribution](THIRD_PARTY_NOTICES.md), included in every CT export and the demo. Dependencies retain their own licences.
 
 The live lab also includes reference-image error maps, paired measurement statistics, before/after enhancement scores and saved region labels. Three real measured objects remain the default examples; an analytic disk test adds known ground truth. See the [live benchmark](docs/LIVE_BENCHMARK.md) and [comparison guide](docs/LIVE_RECONSTRUCTION.md#reference-comparisons-error-statistics-and-labels).
 

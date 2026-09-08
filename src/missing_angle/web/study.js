@@ -64,9 +64,14 @@ function render(){
  if(x.length){const stats=CT.paired(x,y),stride=Math.max(1,Math.ceil(x.length/1800));for(let i=0;i<x.length;i+=stride)points.push([x[i],y[i],true]);plot($('scatter'),points,input.kind==='body_ct_simulated'?'Simulated line integral':'Input line integral','Predicted line integral',true);$('paired-stats').textContent=`${stats.n.toLocaleString()} paired detector readings · RMSE ${number(stats.rmse)} · MAE ${number(stats.mae)} · bias ${number(stats.bias)} · Pearson r ${number(stats.correlation)} · prediction R² ${number(stats.r2)}. Fitted prediction = ${number(stats.slope)} × measurement + ${number(stats.intercept)}. Plot displays ${points.length} evenly sampled pairs; statistics use every pair.`;}else{$('scatter').getContext('2d').clearRect(0,0,880,600);$('paired-stats').textContent='No unused views: choose fewer views and reconstruct again to create a check set.';}
  plot($('angle-error'),e.angles.map(a=>[a.angle,a.rmse,a.selected]),'Acquisition angle (degrees)','Per-view RMSE');
  const worst=[...e.angles].sort((a,b)=>b.rmse-a.rmse).slice(0,5);$('worst-angles').textContent='Largest ray errors: '+worst.map(a=>`view ${a.view+1} at ${number(a.angle)}° (${number(a.rmse)}, ${a.selected?'used':'unused'})`).join('; ')+'.';
- $('history-table').replaceChildren(table(['Stage','Selected-ray RMSE','Unused-ray RMSE'],history.map((v,i)=>[i?'Enhancement '+i:'First pass',number(v.selected.rmse),number(v.unused?.rmse)])));
+ $('history-table').replaceChildren(table(['Checkpoint','Starting image','Selected-ray RMSE','Unused-ray RMSE','Reference RMSE (/mm)','Reference MAE (/mm)','Reference bias (/mm)'],stageMetrics().map(v=>[v.name+(v.current?' · current':''),v.parent_name||'Blank image',number(v.selected.rmse),number(v.unused?.rmse),number(v.image?.rmse),number(v.image?.mae),number(v.image?.bias)])));
  annotations();
 }
+function stageMetrics() {
+ const ref=refs();
+ return history.map(v=>({id:v.id,name:v.name,parent:v.parent,parent_name:history.find(p=>p.id===v.parent)?.name||null,current:v.current,refinements:v.refinements,selected:v.selected,unused:v.unused,image:ref?CT.paired(ref,v.image):null,regions:regions.map(r=>({...r,statistics:regionStats(v.image,ref,r)}))}));
+}
+api.checkpoints=(points,current)=>{history=points.map(p=>({id:p.id,parent:p.parent,name:p.name,image:p.image,selected:p.selected,unused:p.unused,refinements:p.refinements,current:p.id===current}));render();};
 api.clearInput=()=>{generation++;input=null;reference=null;referenceMessage='No reference loaded.';api.reset();render();};
 api.hide=()=>{$('evaluation').hidden=true;$('label-tools').hidden=true;};
 api.reset=()=>{result=null;history=[];$('body-preview').hidden=true;$('evaluation').hidden=true;$('label-tools').hidden=true;};
@@ -75,8 +80,8 @@ api.useInput=async(data,key)=>{
  try{let r=null;if(key==='synthetic')r=syntheticReference();else if(['ta','tb','tc','chest-64','chest-96','abdomen-400','abdomen-480'].includes(key)){r=window.CT_EMBEDDED_REFERENCES?.[key]||await fetch(`reference-data/${key}.json`).then(r=>{if(!r.ok)throw Error('Reference download failed.');return r.json();});}
  if(ticket!==generation)return;if(r){reference=validateReference(r,data);referenceMessage=reference.kind==='analytic'?'Known continuous object, sampled into pixels. Projection values use exact disk chords.':reference.kind==='body_ct_source'?`${reference.name}. Real CT values mapped to an illustrative attenuation scale. This reference defines the simulated object; it is not an independent scanner reconstruction or exact anatomical truth. Reference and result use the same physical field of view.`:`${reference.name}. Full-scan FBP estimate from the dataset authors, reduced to 96 × 96; not exact physical truth. Reference is resampled to the chosen grid, with no fitted alignment or intensity scaling.`;}render();}catch(e){if(ticket===generation){referenceMessage=e.message+' You can still reconstruct and inspect ray errors.';render();}}
 };
-api.show=m=>{result=m;history.push({selected:m.evaluation.selected,unused:m.evaluation.unused});$('evaluation').hidden=false;$('label-tools').hidden=false;render();};
-api.export=()=>({labels:validateLabels({name:$('run-name').value,regions}),reference,evaluation:result?{schema:'ct-statistics/1',image:imageMetrics(),stages:history,angles:result.evaluation.angles,regions:regions.map(r=>({...r,statistics:regionStats(result.image,refs(),r)}))}:null});
+api.show=m=>{result=m;$('evaluation').hidden=false;$('label-tools').hidden=false;render();};
+api.export=()=>({labels:validateLabels({name:$('run-name').value,regions}),reference,evaluation:result?{schema:'ct-statistics/1',image:imageMetrics(),stages:stageMetrics(),angles:result.evaluation.angles,regions:regions.map(r=>({...r,statistics:regionStats(result.image,refs(),r)}))}:null});
 api.restore=data=>{const v=validateLabels(data.labels);if(data.reference)reference=validateReference(data.reference,input);if(v.name)$('run-name').value=v.name;regions=v.regions;if(data.reference)referenceMessage=`Restored reference: ${reference.name}. Supplied for comparison only; alignment must match the acquisition.`;render();};
 api.render=render;
 $('stats-group').onchange=render;

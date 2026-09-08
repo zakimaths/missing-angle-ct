@@ -9,6 +9,7 @@ dist/
 *.egg-info/
 research/internal/pdf-qa/
 .qa/
+qa/node_modules/
 
 output/
 research/internal/
