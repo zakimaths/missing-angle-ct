@@ -118,7 +118,7 @@ def export_control(exp, key):
     identifier = experiment_id(exp)
     st.download_button("Download experiment (.zip)", data=export_bundle(exp),
                        file_name=f"missing-angle-{identifier}.zip", mime="application/zip", key=key)
-    st.caption(f"Experiment {identifier} · arrays, angles, noise, parameters, geometry and environment included.")
+    st.caption(f"Experiment {identifier} · includes images, X-ray measurements, settings and software versions.")
 
 
 def explore():
@@ -176,7 +176,7 @@ def restore_bundle(loaded, report):
 
 
 def replay_upload(key):
-    uploaded = st.file_uploader("Choose a problem to explore ZIP file", type=["zip"], max_upload_size=16, key=f"{key}_upload")
+    uploaded = st.file_uploader("Choose an experiment ZIP file", type=["zip"], max_upload_size=16, key=f"{key}_upload")
     if st.button("Recalculate saved experiment", disabled=uploaded is None, key=f"{key}_replay"):
         try:
             with st.spinner("Opening your saved measurements and calculating the images again…"):
@@ -228,7 +228,7 @@ def public_ct():
         st.caption("Eight horizontal slices from one real chest CT scan. These images are bundled so the lab works offline.")
         with st.form("ct_acquisition"):
             st.selectbox("Chest slice", [s["index"] for s in metadata["slices"]], key="p_slice",
-                         format_func=lambda x: f"Slice {x} of 139 (counting from zero)")
+                         format_func=lambda x: f"Slice {x}")
             st.number_input("Number of viewing angles", 4, 360, key="p_views")
             st.slider("Angle coverage", 30., 180., step=5., key="p_span", format="%.0f°")
             st.slider("Measurement noise", 0., .05, step=.002, key="p_noise", format="%.3f")
@@ -268,12 +268,12 @@ def public_ct():
     with right:
         st.markdown("### Watch the image take shape")
         if "history" in exp.arrays:
-            components.html(player_html(exp.arrays["history"]), height=510, scrolling=True)
+            components.html(player_html(exp.arrays["history"], smoothing=bool(exp.geometry["refinement"]["weight"])), height=510, scrolling=True)
         else:
             st.info("This older experiment has no saved steps. Press Reconstruct this slice to record them.")
-        st.caption("Each pass reuses all available viewing angles. The method corrects the image and applies smoothing. "
+        st.caption("Each pass reuses all available viewing angles. The method corrects the image and uses smoothing when its strength is above zero. "
                    "Extra passes do not add measurements from missing angles.")
-    st.markdown("### Compare three ways of reconstructing the same measurements")
+    st.markdown("### Compare reconstruction methods")
     items = [("fbp", "Fast method · FBP"), ("sart", "Repeated correction · SART")]
     if "regularized" in exp.arrays:
         items.append(("regularized", "Correction + smoothing"))
@@ -284,7 +284,8 @@ def public_ct():
     st.write("**FBP** combines the views using a filter. **SART** repeatedly corrects an image to fit the measurements. "
              "**Correction + smoothing** adds gentle total-variation (TV) smoothing between corrections. "
              "Smoothing can reduce streaks and grain, but it can also remove small details.")
-    st.caption("All three use the same brightness scale: 0–0.6 relative attenuation. A brighter display does not mean a better reconstruction.")
+    st.caption(f"Basic SART: {c.sart_passes} passes. Correction + smoothing: {exp.geometry.get('refinement', {}).get('passes', 0)} passes. "
+               "All methods use the same brightness scale: 0–0.6 relative attenuation. A brighter display does not mean a better reconstruction.")
     st.table([{"Method": label, "Difference from reference ↓": f"{exp.metrics['methods'][method]['rmse']:.5f}",
                "Mismatch with measurements ↓": f"{exp.metrics['methods'][method]['raster_residual_rmse']:.5f}"}
               for method, label in items])

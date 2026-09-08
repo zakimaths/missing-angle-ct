@@ -14,10 +14,10 @@ def png_bytes(array, low=0., high=.6):
     return output.getvalue()
 
 
-def player_html(history):
+def player_html(history, smoothing=True):
     frames = ["data:image/png;base64," + base64.b64encode(png_bytes(frame)).decode()
               for frame in history]
-    return '''<!doctype html><html lang="en"><meta name="viewport" content="width=device-width, initial-scale=1">
+    html = '''<!doctype html><html lang="en"><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 *{box-sizing:border-box}body{margin:0;color:#172f3a;background:white;font:16px/1.5 system-ui,sans-serif}
 img{display:block;width:100%;height:280px;object-fit:contain;background:#080b0c}
@@ -42,3 +42,5 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
 new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)stop()}).observe(image);
 show(0);
 </script></html>'''.replace('FRAMES', json.dumps(frames))
+
+    return html if smoothing else html.replace("then gently smooth it.", "keep smoothing switched off.")
